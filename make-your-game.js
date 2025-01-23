@@ -13,17 +13,20 @@ export const createBricks = () => {
     let counter = 1
     const widthFruit = 90;
     const heightFruit = 70
-    const fruits = ['apple.png', 'apricot.png', 'banana.png', 'cherry.png', 'coconut.png', 'fig.png', 'grape.png', 'kiwi.png', 'lemon.png', 'orange.png', 'pear.png', 'strawberry.png', 'watermelon.png', 'avocado.png']
+    const fruits = ['apple.png', 'apricot.png', 'banana.png', 'cherry.png',
+                    'coconut.png', 'fig.png', 'grape.png', 'kiwi.png', 'lemon.png',
+                    'orange.png', 'pear.png', 'strawberry.png', 'watermelon.png',
+                    'avocado.png', 'lime.png']
     let rowsFruit = Math.floor(heightSquareFruits / heightFruit);
     let columnFruit = Math.floor(widthSquareFruits / widthFruit);
     for (let i = 0; i < rowsFruit; i++) {
         for (let j = 0; j < columnFruit; j++) {
             const brick = document.createElement('img')
-            const randomIndex = Math.floor(Math.random() * 14)
+            const fruitIndex = Math.floor(Math.random() * 15)
             brick.classList.add('fruit')
             // brick.id = `brick-${counter}`
             counter++
-            brick.src = `./images/${fruits[randomIndex]}`
+            brick.src = `./images/${fruits[fruitIndex]}`
             // brick.style.background = fruits[randomIndex]
             brick.style.left = `${j * widthFruit + 10}px`
             brick.style.top = `${i * 70 + 10}px`
@@ -110,11 +113,14 @@ export const clock = () => {
 }
 const chanceElmt = document.querySelector('.chance')
 export const createChances = () => {
-    const fruits = ['apple.png', 'apricot.png', 'banana.png', 'cherry.png', 'coconut.png', 'fig.png', 'grape.png', 'kiwi.png', 'lemon.png', 'orange.png', 'pear.png', 'strawberry.png', 'watermelon.png', 'avocado.png']
+    const fruits = ['apple.png', 'apricot.png', 'banana.png', 'cherry.png',
+        'coconut.png', 'fig.png', 'grape.png', 'kiwi.png', 'lemon.png',
+        'orange.png', 'pear.png', 'strawberry.png', 'watermelon.png',
+        'avocado.png', 'lime.png']
     const validFruitIndex = []
     for(let i = 0; i < chanceNumber; i++) {
         const chance = document.createElement('img')
-        const fruitIndex = Math.floor(Math.random() * 14)
+        const fruitIndex = Math.floor(Math.random() * 15)
         if(!validFruitIndex.includes(fruitIndex)){
             validFruitIndex.push(fruitIndex)
             console.log(validFruitIndex)
