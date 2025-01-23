@@ -35,12 +35,14 @@ body{
     border-radius: 50%;
     /* transition: background-color 0.5s ease; */
 }
-.elements .chance img:nth-child(1){
-    width: 120px;
+.elements .chance img{
+    width: 60px;
+    /* opacity: 0.2; */
+    margin-right: 5px;
 }
-/* .elements .chance img:not() {
-
-} */
+.elements .chance .disappear {
+    opacity: 0.2;
+}
 .gameSquare{
     height: 600px;
     width: 1200px;

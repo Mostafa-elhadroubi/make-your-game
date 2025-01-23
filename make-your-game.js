@@ -4,7 +4,8 @@ const ball = document.querySelector('.ball')
 const paddle = document.querySelector('.paddle')
 let horizontalVelocity = 1;  // Horizontal movement speed
 let verticalVelocity = 1; 
-let angle = 0
+let angle = 0;
+let chanceNumber = 4;
 let widthSquareFruits = parseInt(getComputedStyle(fruitElemnt).getPropertyValue('width'))
 let heightSquareFruits = parseInt(getComputedStyle(fruitElemnt).getPropertyValue('height'))
 export const createBricks = () => {
@@ -12,9 +13,9 @@ export const createBricks = () => {
     let counter = 1
     const widthFruit = 90;
     const heightFruit = 70
+    const fruits = ['apple.png', 'apricot.png', 'banana.png', 'cherry.png', 'coconut.png', 'fig.png', 'grape.png', 'kiwi.png', 'lemon.png', 'orange.png', 'pear.png', 'strawberry.png', 'watermelon.png', 'avocado.png']
     let rowsFruit = Math.floor(heightSquareFruits / heightFruit);
     let columnFruit = Math.floor(widthSquareFruits / widthFruit);
-    const fruits = ['apple.png', 'apricot.png', 'banana.png', 'cherry.png', 'coconut.png', 'fig.png', 'grape.png', 'kiwi.png', 'lemon.png', 'orange.png', 'pear.png', 'strawberry.png', 'watermelon.png', 'avocado.png']
     for (let i = 0; i < rowsFruit; i++) {
         for (let j = 0; j < columnFruit; j++) {
             const brick = document.createElement('img')
@@ -107,6 +108,18 @@ export const clock = () => {
         angle = 0
     }
 }
+const chanceElmt = document.querySelector('.chance')
+const createChances = () => {
+    const fruits = ['apple.png', 'apricot.png', 'banana.png', 'cherry.png', 'coconut.png', 'fig.png', 'grape.png', 'kiwi.png', 'lemon.png', 'orange.png', 'pear.png', 'strawberry.png', 'watermelon.png', 'avocado.png']
+    for(let i = 0; i < chanceNumber; i++) {
+        const chance = document.createElement('img')
+        const fruitIndex = Math.floor(Math.random() * 14)
+        chance.src = `./images/${fruits[fruitIndex]}`
+        chanceElmt.appendChild(chance)
+    }
+
+}
+createChances()
 let id = setInterval(() => {
     moveBall()
     changeDirection()
