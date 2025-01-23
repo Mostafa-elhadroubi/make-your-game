@@ -21,16 +21,16 @@ export const createBricks = () => {
     let columnFruit = Math.floor(widthSquareFruits / widthFruit);
     for (let i = 0; i < rowsFruit; i++) {
         for (let j = 0; j < columnFruit; j++) {
-            const brick = document.createElement('img')
+            const fruit = document.createElement('img')
             const fruitIndex = Math.floor(Math.random() * 15)
-            brick.classList.add('fruit')
-            // brick.id = `brick-${counter}`
+            fruit.classList.add('fruit')
+            // fruit.id = `fruit-${counter}`
             counter++
-            brick.src = `./images/${fruits[fruitIndex]}`
-            // brick.style.background = fruits[randomIndex]
-            brick.style.left = `${j * widthFruit + 10}px`
-            brick.style.top = `${i * 70 + 10}px`
-            fruitElemnt.appendChild(brick)
+            fruit.src = `./images/${fruits[fruitIndex]}`
+            // fruit.style.background = fruits[randomIndex]
+            fruit.style.left = `${j * widthFruit + 10}px`
+            fruit.style.top = `${i * 70 + 10}px`
+            fruitElemnt.appendChild(fruit)
         }
     }
     // console.log(fruitElemnt.querySelectorAll('.brick'))
@@ -38,20 +38,20 @@ export const createBricks = () => {
 
 export const moveBall = () => {
 
-        let ballLeft = parseInt(window.getComputedStyle(moneky).getPropertyValue('left'))
-        let ballTop = parseInt(window.getComputedStyle(moneky).getPropertyValue('top'))
+        let monkeyLeft = parseInt(window.getComputedStyle(moneky).getPropertyValue('left'))
+        let monkeyTop = parseInt(window.getComputedStyle(moneky).getPropertyValue('top'))
         
-        moneky.style.left = (ballLeft + (10 * horizontalVelocity)) + 'px';
-        moneky.style.top = (ballTop - (10 * verticalVelocity)) + 'px';
+        moneky.style.left = (monkeyLeft + (10 * horizontalVelocity)) + 'px';
+        moneky.style.top = (monkeyTop - (10 * verticalVelocity)) + 'px';
 }
 
 export const changeDirection = () => {
     const rect = square.getBoundingClientRect()
-    const rectBall = moneky.getBoundingClientRect()
-        if(rectBall.left <= rect.left || rectBall.right >= rect.right) {
+    const rectMoneky = moneky.getBoundingClientRect()
+        if(rectMoneky.left <= rect.left || rectMoneky.right >= rect.right) {
             horizontalVelocity = -horizontalVelocity
         }
-        if(rectBall.top  <= rect.top  ) {
+        if(rectMoneky.top  <= rect.top  ) {
             verticalVelocity = -verticalVelocity
         }
 }
@@ -131,6 +131,16 @@ export const createChances = () => {
 
 }
 
+const  lostChance = () => {
+    const chance = document.querySelectorAll('.chance img')
+        if(!chance[chanceNumber-1].classList.contains('disappear')){
+            chance[chanceNumber-1].classList.add('disappear')
+            chanceNumber--
+        }
+        if(chanceNumber == 0) {
+            console.log("lost the game")
+        }
+}
 let id = setInterval(() => {
     moveBall()
     changeDirection()
@@ -139,22 +149,15 @@ let id = setInterval(() => {
 
 let id2 = setInterval(() => {
     const rectPaddle = paddle.getBoundingClientRect()
-    const rectBall = moneky.getBoundingClientRect()
+    const rectMoneky = moneky.getBoundingClientRect()
     const rectsquare = square.getBoundingClientRect()
-    if(rectBall.bottom >= rectPaddle.top && rectPaddle.left <= rectBall.right && rectPaddle.right >= rectBall.left) {
+    if(rectMoneky.bottom >= rectPaddle.top && rectPaddle.left <= rectMoneky.right && rectPaddle.right >= rectMoneky.left) {
         console.log("yes")
         verticalVelocity = -verticalVelocity
     }
-    if(rectBall.top >= rectsquare.bottom) {
+    if(rectMoneky.top >= rectsquare.bottom) {
         moneky.style.opacity = '0'
-        const chance = document.querySelectorAll('.chance img')
-        if(!chance[chanceNumber-1].classList.contains('disappear')){
-            chance[chanceNumber-1].classList.add('disappear')
-            chanceNumber--
-        }
-        if(chanceNumber == 0) {
-            console.log("lost the game")
-        }
+        lostChance(4)
         // for (let i = chanceNumber-1; i >= 0; i--) {
         //     if(!chance[i].classList.contains('disappear')) {
         //         chance[i].classList.add('disappear')
@@ -163,7 +166,7 @@ let id2 = setInterval(() => {
         //         console.log("lost the game")
         //     }
         // }
-        console.log(chance)
+        // console.log(chance)
         clearInterval(id)
         clearInterval(id2)
     }
