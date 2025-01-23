@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="make-your-game.css">
+</head>
+<body>
+    <div class="container">
+        <div class="elements">
+            <h3>Level:</h3>
+            <p class="score"></p>
+            <div class="clock"></div>
+            <div class="chance">
+                <img src="./images/fruit_basket.png" alt="">
+                <!-- <img src="./images/avocado.png" alt="">
+                <img src="./images/coconut.png" alt="">
+                <img src="./images/kiwi.png" alt="">
+                <img src="./images/orange.png" alt=""> -->
+            </div>
+        </div>
+    <div class="brickRemoved"></div>
+        <div class="gameSquare">
+            <div class="fruits"></div>
+            <div class="paddle"></div>
+            <div class="ball"></div>
+        </div>
+    </div>
+    <script type="module">
+        import {createBricks, movePaddle, clock} from './make-your-game.js';
+        // document.addEventListener('DOMContentLoaded', () => {
+            createBricks();
+            movePaddle()
+            clock()
+           setInterval(clock, 1000)
+        // })
+    </script>
+</body>
+</html>

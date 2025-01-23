@@ -1,0 +1,95 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    height: 100vh;
+    background: url("./images/wonderful-world-beautiful.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* overflow: hidden; */
+}
+.container {
+    /* background: red; */
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    height: 100vh;
+}
+.elements {
+    width: 100%;
+    height: 150px;
+    /* background: red; */
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    font-size: 24px;
+    color: white;
+}
+.elements .clock {
+    width: 100px;
+    height: 100px;
+    /* background-color: conic-gradient(rgb(199, 199, 199) 0deg, rgb(56, 53, 53)  0deg); */
+    border-radius: 50%;
+    /* transition: background-color 0.5s ease; */
+}
+.elements .chance img:nth-child(1){
+    width: 120px;
+}
+/* .elements .chance img:not() {
+
+} */
+.gameSquare{
+    height: 600px;
+    width: 1200px;
+    border: 2px solid white;
+    position: relative;
+    /* box-shadow: 3px 3px 30px #c0bcbc,
+                -3px -3px 30px #c0bcbc; */
+    border-radius: 10px;
+    /* background: url("./images/wonderful-world-beautiful.jpg");
+    background-repeat: no-repeat;
+    background-size: cover; */
+
+}
+.fruits {
+    width: 100%;  /* Full width of the container */
+    height: 280px; /* Set height to fit your design */
+    /* background: purple; */
+    position: relative;
+}
+.fruits img {
+    display: block;
+}
+.fruit {
+    width: 80px;
+    height: 60px;
+    border-radius: 5px;
+    position: absolute;
+}
+.remove{
+    opacity: 0;
+}
+.paddle{
+    width: 150px;
+    height: 20px;
+    background: rgb(8, 8, 8);
+    border-radius: 10px;
+    position: absolute;
+    bottom: 10px;
+    /* transform: translate(50%); */
+}
+.ball{
+    width: 20px;
+    height: 20px;
+    background: #ff0000;
+    position: absolute;
+    /* border-radius: 50%; */
+    top: 550px;
+    left: 300px;
+    /* transform: translateX(50%); */
+}
+
+
