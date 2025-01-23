@@ -56,18 +56,16 @@ export const changeDirection = () => {
         }
 }
 
-// console.log(bricks)
+
 let score = 0
 const removed = document.querySelector('.brickRemoved')
 export const removeBrick = () => {
     const bricks = fruitElemnt.querySelectorAll('.fruit')
-    // console.log(bricks)
     const scoreElement = document.querySelector('.score')
     bricks.forEach(brick => {
-        // removed.innerHTML = `${brickRemoved * 10}`
-        const rectBall = moneky.getBoundingClientRect()
+        const rectMoneky = moneky.getBoundingClientRect()
         const brickObj = brick.getBoundingClientRect()
-        if(!brick.classList.contains('remove') && rectBall.top <= brickObj.bottom && rectBall.left >= brickObj.left && brickObj.right >= rectBall.right) {
+        if(!brick.classList.contains('remove') && rectMoneky.top <= brickObj.bottom && rectMoneky.left >= brickObj.left && brickObj.right >= rectMoneky.right) {
             brick.classList.add('remove')
             score += 10
             scoreElement.innerHTML = `Score: <strong>${score}</strong>`
@@ -88,7 +86,7 @@ export const movePaddle = () => {
         else if (event.key == 'ArrowLeft' && paddle.offsetLeft > 0) {
             paddle.style.left = `${paddle.offsetLeft - 10}px`
         }
-        // console.log(rectBall, rectPaddle)
+        // console.log(rectMoneky, rectPaddle)
         
     })
 }
