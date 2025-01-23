@@ -41,7 +41,7 @@ body{
     margin-right: 5px;
 }
 .elements .chance .disappear {
-    opacity: 0.2;
+    opacity: 0.3;
 }
 .gameSquare{
     height: 600px;
@@ -83,10 +83,10 @@ body{
     bottom: 10px;
     /* transform: translate(50%); */
 }
-.ball{
-    width: 20px;
-    height: 20px;
-    background: #ff0000;
+.moneky{
+    width: 60px;
+    height: 60px;
+    /* background: #ff0000; */
     position: absolute;
     /* border-radius: 50%; */
     top: 550px;

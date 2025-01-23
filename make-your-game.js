@@ -1,6 +1,6 @@
 const fruitElemnt = document.querySelector('.fruits');
 const square = document.querySelector('.gameSquare')
-const ball = document.querySelector('.ball')
+const moneky = document.querySelector('.moneky')
 const paddle = document.querySelector('.paddle')
 let horizontalVelocity = 1;  // Horizontal movement speed
 let verticalVelocity = 1; 
@@ -35,16 +35,16 @@ export const createBricks = () => {
 
 export const moveBall = () => {
 
-        let ballLeft = parseInt(window.getComputedStyle(ball).getPropertyValue('left'))
-        let ballTop = parseInt(window.getComputedStyle(ball).getPropertyValue('top'))
+        let ballLeft = parseInt(window.getComputedStyle(moneky).getPropertyValue('left'))
+        let ballTop = parseInt(window.getComputedStyle(moneky).getPropertyValue('top'))
         
-        ball.style.left = (ballLeft + (10 * horizontalVelocity)) + 'px';
-        ball.style.top = (ballTop - (10 * verticalVelocity)) + 'px';
+        moneky.style.left = (ballLeft + (10 * horizontalVelocity)) + 'px';
+        moneky.style.top = (ballTop - (10 * verticalVelocity)) + 'px';
 }
 
 export const changeDirection = () => {
     const rect = square.getBoundingClientRect()
-    const rectBall = ball.getBoundingClientRect()
+    const rectBall = moneky.getBoundingClientRect()
         if(rectBall.left <= rect.left || rectBall.right >= rect.right) {
             horizontalVelocity = -horizontalVelocity
         }
@@ -62,7 +62,7 @@ export const removeBrick = () => {
     const scoreElement = document.querySelector('.score')
     bricks.forEach(brick => {
         // removed.innerHTML = `${brickRemoved * 10}`
-        const rectBall = ball.getBoundingClientRect()
+        const rectBall = moneky.getBoundingClientRect()
         const brickObj = brick.getBoundingClientRect()
         if(!brick.classList.contains('remove') && rectBall.top <= brickObj.bottom && rectBall.left >= brickObj.left && brickObj.right >= rectBall.right) {
             brick.classList.add('remove')
@@ -109,17 +109,24 @@ export const clock = () => {
     }
 }
 const chanceElmt = document.querySelector('.chance')
-const createChances = () => {
+export const createChances = () => {
     const fruits = ['apple.png', 'apricot.png', 'banana.png', 'cherry.png', 'coconut.png', 'fig.png', 'grape.png', 'kiwi.png', 'lemon.png', 'orange.png', 'pear.png', 'strawberry.png', 'watermelon.png', 'avocado.png']
+    const validFruitIndex = []
     for(let i = 0; i < chanceNumber; i++) {
         const chance = document.createElement('img')
         const fruitIndex = Math.floor(Math.random() * 14)
-        chance.src = `./images/${fruits[fruitIndex]}`
-        chanceElmt.appendChild(chance)
+        if(!validFruitIndex.includes(fruitIndex)){
+            validFruitIndex.push(fruitIndex)
+            console.log(validFruitIndex)
+            chance.src = `./images/${fruits[fruitIndex]}`
+            chanceElmt.appendChild(chance)
+        } else {
+            i--
+        }
     }
 
 }
-createChances()
+
 let id = setInterval(() => {
     moveBall()
     changeDirection()
@@ -128,15 +135,31 @@ let id = setInterval(() => {
 
 let id2 = setInterval(() => {
     const rectPaddle = paddle.getBoundingClientRect()
-    const rectBall = ball.getBoundingClientRect()
+    const rectBall = moneky.getBoundingClientRect()
     const rectsquare = square.getBoundingClientRect()
     if(rectBall.bottom >= rectPaddle.top && rectPaddle.left <= rectBall.right && rectPaddle.right >= rectBall.left) {
         console.log("yes")
         verticalVelocity = -verticalVelocity
     }
     if(rectBall.top >= rectsquare.bottom) {
-        ball.style.opacity = '0'
-        console.log('lost')
+        moneky.style.opacity = '0'
+        const chance = document.querySelectorAll('.chance img')
+        if(!chance[chanceNumber-1].classList.contains('disappear')){
+            chance[chanceNumber-1].classList.add('disappear')
+            chanceNumber--
+        }
+        if(chanceNumber == 0) {
+            console.log("lost the game")
+        }
+        // for (let i = chanceNumber-1; i >= 0; i--) {
+        //     if(!chance[i].classList.contains('disappear')) {
+        //         chance[i].classList.add('disappear')
+        //         break
+        //     } else {
+        //         console.log("lost the game")
+        //     }
+        // }
+        console.log(chance)
         clearInterval(id)
         clearInterval(id2)
     }

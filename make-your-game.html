@@ -19,16 +19,17 @@
         <div class="gameSquare">
             <div class="fruits"></div>
             <div class="paddle"></div>
-            <div class="ball"></div>
+            <img src="./images/monkey.png" class="moneky"></img>
         </div>
     </div>
     <script type="module">
-        import {createBricks, movePaddle, clock} from './make-your-game.js';
+        import {createBricks, movePaddle, clock, createChances} from './make-your-game.js';
         // document.addEventListener('DOMContentLoaded', () => {
             createBricks();
             movePaddle()
             clock()
            setInterval(clock, 1000)
+           createChances()
         // })
     </script>
 </body>
