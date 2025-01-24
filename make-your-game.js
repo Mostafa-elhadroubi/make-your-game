@@ -146,12 +146,14 @@ const randomPositionMonkey = () => {
     const rect = square.getBoundingClientRect()
     const rectMoneky = moneky.getBoundingClientRect()
     console.log(rect, rectMoneky)
-    const randomLeft = Math.floor((Math.random() * (rect.right - rect.left) - rectMoneky.width) + rectMoneky.width)
-    console.log(randomLeft)
+    const randomLeft = Math.floor((Math.random() * (rect.right - rect.left - (2 * rectMoneky.width))) + rectMoneky.width)
+    console.log(randomLeft, rectMoneky.width, rect.width)
     moneky.style.left = `${randomLeft}px`
-    moneky.style.top = `${rect.bottom - 300}px`
+    moneky.style.top = `${rect.bottom - 200}px`
 }
 randomPositionMonkey()
+
+
 let id = setInterval(() => {
     moveBall()
     changeDirection()
