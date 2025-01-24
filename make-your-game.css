@@ -92,5 +92,48 @@ body{
     /* top: 550px;
     left: 300px; */
 }
+.gameLost {
+    width: 400px;
+    height: 200px;
+    background: linear-gradient(to bottom right, rgb(4, 12, 88), rgb(175, 181, 238));
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 10px;
+    border: 2px solid whitesmoke;
+    color: whitesmoke;
+    display: none;
+   
+    /* transform: translate(50%, 50%); */
+}
+.gameLost p {
+    font-size: 24px;
+}
+.gameLost h3{
+    color: rgba(255, 255, 255, 0.938);
+    font-size: 24px;
+    /* font-weight: bold; */
+}
+.gameLost h3 strong {
+    color: rgb(226, 16, 16);
+    font-size: 28px;
+}
+.gameLost button{
+    background: rgba(25, 25, 224, 0.911);
+    padding: 12px 20px;
+    border: 2px solid rgba(215, 215, 221, 0.856);
+    border-radius: 5px;
+    font-size: 22px;
+    color: whitesmoke;
+    cursor: pointer;
+}
+.gameLost button:hover {
+    color: blue;
+    background: rgba(245, 245, 245, 0.637);
+    border: 2px solid rgba(0, 0, 255, 0.836);
+    transition: background-color 0.6s ease, color 0.6s ease;
+}
 
 

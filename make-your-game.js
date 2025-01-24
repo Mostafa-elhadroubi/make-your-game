@@ -6,6 +6,8 @@ let horizontalVelocity = 1;  // Horizontal movement speed
 let verticalVelocity = 1; 
 let angle = 0;
 let chanceNumber = 4;
+let restart = false;
+let id;
 let widthSquareFruits = parseInt(getComputedStyle(fruitElemnt).getPropertyValue('width'))
 let heightSquareFruits = parseInt(getComputedStyle(fruitElemnt).getPropertyValue('height'))
 export const createBricks = () => {
@@ -16,13 +18,13 @@ export const createBricks = () => {
     const fruits = ['apple.png', 'apricot.png', 'banana.png', 'cherry.png',
                     'coconut.png', 'fig.png', 'grape.png', 'kiwi.png', 'lemon.png',
                     'orange.png', 'pear.png', 'strawberry.png', 'watermelon.png',
-                    'avocado.png', 'lime.png']
+                    'avocado.png', 'lime.png', 'melon.png']
     let rowsFruit = Math.floor(heightSquareFruits / heightFruit);
     let columnFruit = Math.floor(widthSquareFruits / widthFruit);
     for (let i = 0; i < rowsFruit; i++) {
         for (let j = 0; j < columnFruit; j++) {
             const fruit = document.createElement('img')
-            const fruitIndex = Math.floor(Math.random() * 15)
+            const fruitIndex = Math.floor(Math.random() * 16)
             fruit.classList.add('fruit')
             // fruit.id = `fruit-${counter}`
             counter++
@@ -114,11 +116,11 @@ export const createChances = () => {
     const fruits = ['apple.png', 'apricot.png', 'banana.png', 'cherry.png',
         'coconut.png', 'fig.png', 'grape.png', 'kiwi.png', 'lemon.png',
         'orange.png', 'pear.png', 'strawberry.png', 'watermelon.png',
-        'avocado.png', 'lime.png']
+        'avocado.png', 'lime.png', 'melon.png']
     const validFruitIndex = []
     for(let i = 0; i < chanceNumber; i++) {
         const chance = document.createElement('img')
-        const fruitIndex = Math.floor(Math.random() * 15)
+        const fruitIndex = Math.floor(Math.random() * 16)
         if(!validFruitIndex.includes(fruitIndex)){
             validFruitIndex.push(fruitIndex)
             // console.log(validFruitIndex)
@@ -136,31 +138,63 @@ const  lostChance = () => {
         if(!chance[chanceNumber-1].classList.contains('disappear')){
             chance[chanceNumber-1].classList.add('disappear')
             chanceNumber--
+            gameLost(chanceNumber)
         }
-        if(chanceNumber == 0) {
-            console.log("lost the game")
-        }
+        
 }
 
 const randomPositionMonkey = () => {
     const rect = square.getBoundingClientRect()
     const rectMoneky = moneky.getBoundingClientRect()
-    console.log(rect, rectMoneky)
+    
     const randomLeft = Math.floor((Math.random() * (rect.right - rect.left - (2 * rectMoneky.width))) + rectMoneky.width)
-    console.log(randomLeft, rectMoneky.width, rect.width)
+   
     moneky.style.left = `${randomLeft}px`
     moneky.style.top = `${rect.bottom - 200}px`
 }
 randomPositionMonkey()
+const lostGame = document.querySelector('.gameLost')
+const gameLost = (chanceNumber) => {
+    const rectBody = document.querySelector('body').getBoundingClientRect()
+    const widthLostGame = parseInt(getComputedStyle(lostGame).getPropertyValue('width'))
+    const heightLostGame = parseInt(getComputedStyle(lostGame).getPropertyValue('height'))
+    // console.log(rectBody, rectLostGame)
+    lostGame.style.top = `${rectBody.height / 2 - (heightLostGame / 2)}px`
+    lostGame.style.left = `${rectBody.width / 2 - (widthLostGame.width / 2)}px`
+    console.log(lostGame.style.top, lostGame.style.left)
+    const chanceNumberRemain = lostGame.querySelector('h3')
+    console.log(chanceNumberRemain)
+    if(chanceNumber == 0) {
+        chanceNumberRemain.innerHTML = `Game Over!!!!`
+        chanceNumberRemain.style.color = 'red'
+    } else {
+        chanceNumberRemain.innerHTML = `Number of chance remains: <strong>${chanceNumber}</strong>`
+    }
+    lostGame.style.display = 'flex'
+    if(!restart){
 
+        clearInterval(id)
+        // clearInterval(id2)
+    }
+}   
 
-let id = setInterval(() => {
-    moveBall()
-    changeDirection()
-    removeBrick()
-}, 100)
+const infinitLoop = () => {
+id = setInterval(() => {
+        moveBall()
+        changeDirection()
+        removeBrick()
+        extremeSquare()
+    }, 100)
+}
+infinitLoop()
 
-let id2 = setInterval(() => {
+const restartBtn = document.querySelector('.gameLost button')
+restartBtn.addEventListener('click', () => {
+    infinitLoop()
+    lostGame.style.display = 'none'
+
+})
+const extremeSquare = () => {
     const rectPaddle = paddle.getBoundingClientRect()
     const rectMoneky = moneky.getBoundingClientRect()
     const rectsquare = square.getBoundingClientRect()
@@ -171,8 +205,8 @@ let id2 = setInterval(() => {
     if(rectMoneky.top >= rectsquare.bottom) {
         moneky.style.opacity = '0'
         lostChance(4)
-        clearInterval(id)
-        clearInterval(id2)
+        randomPositionMonkey()
+        
     }
-}, 100)
+}
 
