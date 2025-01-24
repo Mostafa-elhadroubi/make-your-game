@@ -9,7 +9,7 @@ let chanceNumber = 4;
 let widthSquareFruits = parseInt(getComputedStyle(fruitElemnt).getPropertyValue('width'))
 let heightSquareFruits = parseInt(getComputedStyle(fruitElemnt).getPropertyValue('height'))
 export const createBricks = () => {
-    console.log(heightSquareFruits)
+    // console.log(heightSquareFruits)
     let counter = 1
     const widthFruit = 90;
     const heightFruit = 70
@@ -40,7 +40,7 @@ export const moveBall = () => {
 
         let monkeyLeft = parseInt(window.getComputedStyle(moneky).getPropertyValue('left'))
         let monkeyTop = parseInt(window.getComputedStyle(moneky).getPropertyValue('top'))
-        
+        // console.log(monkeyLeft, monkeyTop)
         moneky.style.left = (monkeyLeft + (10 * horizontalVelocity)) + 'px';
         moneky.style.top = (monkeyTop - (10 * verticalVelocity)) + 'px';
 }
@@ -121,7 +121,7 @@ export const createChances = () => {
         const fruitIndex = Math.floor(Math.random() * 15)
         if(!validFruitIndex.includes(fruitIndex)){
             validFruitIndex.push(fruitIndex)
-            console.log(validFruitIndex)
+            // console.log(validFruitIndex)
             chance.src = `./images/${fruits[fruitIndex]}`
             chanceElmt.appendChild(chance)
         } else {
@@ -141,6 +141,17 @@ const  lostChance = () => {
             console.log("lost the game")
         }
 }
+
+const randomPositionMonkey = () => {
+    const rect = square.getBoundingClientRect()
+    const rectMoneky = moneky.getBoundingClientRect()
+    console.log(rect, rectMoneky)
+    const randomLeft = Math.floor((Math.random() * (rect.right - rect.left) - rectMoneky.width) + rectMoneky.width)
+    console.log(randomLeft)
+    moneky.style.left = `${randomLeft}px`
+    moneky.style.top = `${rect.bottom - 300}px`
+}
+randomPositionMonkey()
 let id = setInterval(() => {
     moveBall()
     changeDirection()
@@ -158,15 +169,6 @@ let id2 = setInterval(() => {
     if(rectMoneky.top >= rectsquare.bottom) {
         moneky.style.opacity = '0'
         lostChance(4)
-        // for (let i = chanceNumber-1; i >= 0; i--) {
-        //     if(!chance[i].classList.contains('disappear')) {
-        //         chance[i].classList.add('disappear')
-        //         break
-        //     } else {
-        //         console.log("lost the game")
-        //     }
-        // }
-        // console.log(chance)
         clearInterval(id)
         clearInterval(id2)
     }
