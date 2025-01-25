@@ -10,7 +10,7 @@ let restart = false;
 let id;
 let widthSquareFruits = parseInt(getComputedStyle(fruitElemnt).getPropertyValue('width'))
 let heightSquareFruits = parseInt(getComputedStyle(fruitElemnt).getPropertyValue('height'))
-export const createBricks = () => {
+export const createFruits = () => {
     // console.log(heightSquareFruits)
     let counter = 1
     const widthFruit = 90;
@@ -35,14 +35,12 @@ export const createBricks = () => {
             fruitElemnt.appendChild(fruit)
         }
     }
-    // console.log(fruitElemnt.querySelectorAll('.brick'))
 }
 
-export const moveBall = () => {
+export const moveMoneky = () => {
 
         let monkeyLeft = parseInt(window.getComputedStyle(moneky).getPropertyValue('left'))
         let monkeyTop = parseInt(window.getComputedStyle(moneky).getPropertyValue('top'))
-        // console.log(monkeyLeft, monkeyTop)
         moneky.style.left = (monkeyLeft + (10 * horizontalVelocity)) + 'px';
         moneky.style.top = (monkeyTop - (10 * verticalVelocity)) + 'px';
 }
@@ -61,7 +59,7 @@ export const changeDirection = () => {
 
 let score = 0
 const removed = document.querySelector('.brickRemoved')
-export const removeBrick = () => {
+export const removeFruit = () => {
     const bricks = fruitElemnt.querySelectorAll('.fruit')
     const scoreElement = document.querySelector('.score')
     bricks.forEach(brick => {
@@ -153,6 +151,7 @@ const randomPositionMonkey = () => {
     moneky.style.top = `${rect.bottom - 200}px`
 }
 randomPositionMonkey()
+
 const lostGame = document.querySelector('.gameLost')
 const gameLost = (chanceNumber) => {
     const rectBody = document.querySelector('body').getBoundingClientRect()
@@ -180,9 +179,9 @@ const gameLost = (chanceNumber) => {
 
 const infinitLoop = () => {
 id = setInterval(() => {
-        moveBall()
+        moveMoneky()
         changeDirection()
-        removeBrick()
+        removeFruit()
         extremeSquare()
     }, 100)
 }
@@ -190,7 +189,11 @@ infinitLoop()
 
 const restartBtn = document.querySelector('.gameLost button')
 restartBtn.addEventListener('click', () => {
+    randomPositionMonkey()
+    console.log(id)
+    clearInterval(id)
     infinitLoop()
+
     lostGame.style.display = 'none'
 
 })
@@ -205,7 +208,7 @@ const extremeSquare = () => {
     if(rectMoneky.top >= rectsquare.bottom) {
         moneky.style.opacity = '0'
         lostChance(4)
-        randomPositionMonkey()
+        
         
     }
 }
