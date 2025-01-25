@@ -31,8 +31,10 @@ body{
 .elements .clock {
     width: 100px;
     height: 100px;
-    /* background-color: conic-gradient(rgb(199, 199, 199) 0deg, rgb(56, 53, 53)  0deg); */
+    /* background-image: rgb(170, 159, 159); */
+    background-image: conic-gradient(rgba(218, 207, 207, 0.94) 0deg,rgba(218, 207, 207, 0.94) 0deg);
     border-radius: 50%;
+    border: 2px solid rgb(255, 255, 255);
     /* transition: background-color 0.5s ease; */
 }
 .elements .chance img{

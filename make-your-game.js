@@ -6,8 +6,10 @@ let horizontalVelocity = 1;  // Horizontal movement speed
 let verticalVelocity = 1; 
 let angle = 0;
 let chanceNumber = 4;
+let currentChanceNumber = chanceNumber;
 let restart = false;
 let id;
+let clockId;
 let level = 1;
 let delay = 100;
 let widthSquareFruits = parseInt(getComputedStyle(fruitElemnt).getPropertyValue('width'))
@@ -59,9 +61,9 @@ export const changeDirection = () => {
 
 let score = 0
 const removed = document.querySelector('.brickRemoved')
+const scoreElement = document.querySelector('.score')
 export const removeFruit = () => {
     const fruits = fruitElemnt.querySelectorAll('.fruit')
-    const scoreElement = document.querySelector('.score')
     fruits.forEach(brick => {
         const rectMoneky = moneky.getBoundingClientRect()
         const rectFruit = brick.getBoundingClientRect()
@@ -93,20 +95,26 @@ export const movePaddle = () => {
 
 export const clock = () => {
     const clock = document.querySelector('.clock')
-        clock.style.backgroundImage = `conic-gradient(rgb(226, 226, 226) ${angle}deg, white ${angle}deg)`
-        clock.style.transform = `scale(0.95)`
+        clock.style.backgroundImage = `conic-gradient(rgb(170, 159, 159) ${angle}deg, rgba(218, 207, 207, 0.94) ${angle}deg)`
     if(angle >= 310) {
-        clock.style.backgroundImage = `conic-gradient(rgb(56, 56, 56) ${angle}deg, white ${angle}deg)`
+        clock.style.backgroundImage = `conic-gradient(rgb(207, 25, 25) ${angle}deg, rgba(218, 207, 207, 0.94) ${angle}deg)`
         clock.style.transform = `scale(1.05)`
         clock.style.transition = `transform 1s ease`
     }
     angle += 24
     if(angle > 360) {
-        angle = 0
+        
+        clearInterval(clockId)
+        lostChance()
     }
 }
+clock()
+const intervalClock = () => {
+    clockId = setInterval(clock, 1000)
+}
+intervalClock()
 const chanceElmt = document.querySelector('.chance')
-export const createChances = () => {
+export const createChances = (chanceNumber) => {
     const fruits = ['apple.png', 'apricot.png', 'banana.png', 'cherry.png',
         'coconut.png', 'fig.png', 'grape.png', 'kiwi.png', 'lemon.png',
         'orange.png', 'pear.png', 'strawberry.png', 'watermelon.png',
@@ -129,11 +137,12 @@ export const createChances = () => {
 
 const  lostChance = () => {
     const chance = document.querySelectorAll('.chance img')
-        if(!chance[chanceNumber-1].classList.contains('disappear')){
-            chance[chanceNumber-1].classList.add('disappear')
-            chanceNumber--
-            gameLost(chanceNumber)
-        }
+    console.log(chance[currentChanceNumber-1], currentChanceNumber)
+    if(!chance[currentChanceNumber-1].classList.contains('disappear')){
+        chance[currentChanceNumber-1].classList.add('disappear')
+        currentChanceNumber--
+        gameLost(currentChanceNumber)
+    }
         
 }
 
@@ -150,29 +159,26 @@ const randomPositionMonkey = () => {
 randomPositionMonkey()
 
 const lostGame = document.querySelector('.gameLost')
-const gameLost = (chanceNumber) => {
+const gameLost = (currentChanceNumber) => {
     const rectBody = document.querySelector('body').getBoundingClientRect()
     const widthLostGame = parseInt(getComputedStyle(lostGame).getPropertyValue('width'))
     const heightLostGame = parseInt(getComputedStyle(lostGame).getPropertyValue('height'))
-    // console.log(rectBody, rectLostGame)
     lostGame.style.top = `${rectBody.height / 2 - (heightLostGame / 2)}px`
     lostGame.style.left = `${rectBody.width / 2 - (widthLostGame.width / 2)}px`
-    // console.log(lostGame.style.top, lostGame.style.left)
     const chanceNumberRemain = lostGame.querySelector('h3')
-    // console.log(chanceNumberRemain)
-    if(chanceNumber == 0) {
+    console.log("gamelost",currentChanceNumber)
+    if(currentChanceNumber == 0) {
         chanceNumberRemain.innerHTML = `Game Over!!!!`
         chanceNumberRemain.style.color = 'red'
+        currentChanceNumber = chanceNumber
+        chanceElmt.innerHTML = ''
+        createChances(chanceNumber)
     } else {
-        chanceNumberRemain.innerHTML = `Number of chance remains: <strong>${chanceNumber}</strong>`
+        chanceNumberRemain.innerHTML = `Number of chance remains: <strong>${currentChanceNumber}</strong>`
     }
     lostGame.style.display = 'flex'
-    if(!restart){
-
-        // restart = true
-        clearInterval(id)
-        // clearInterval(id2)
-    }
+    clearInterval(id)
+    clearInterval(clockId)
 }   
 
 const infinitLoop = () => {
@@ -187,12 +193,17 @@ infinitLoop()
 
 const restartBtn = document.querySelector('.gameLost button')
 restartBtn.addEventListener('click', () => {
-    // clearInterval(id)
-    randomPositionMonkey()
-    console.log(id)
-    // moveMoneky()
+    score = 0
+    angle = 0;
     horizontalVelocity = 1; 
-    verticalVelocity = 1
+    verticalVelocity = 1;
+    scoreElement.innerHTML = `Score: <strong>${score}</strong>`
+    fruitElemnt.innerHTML = ''
+    clock()
+    createFruits()
+    intervalClock()
+    randomPositionMonkey()
+    console.log(id)    
     infinitLoop()
 
     lostGame.style.display = 'none'
