@@ -8,10 +8,11 @@ let angle = 0;
 let chanceNumber = 4;
 let restart = false;
 let id;
+let level = 1;
+let delay = 100;
 let widthSquareFruits = parseInt(getComputedStyle(fruitElemnt).getPropertyValue('width'))
 let heightSquareFruits = parseInt(getComputedStyle(fruitElemnt).getPropertyValue('height'))
 export const createFruits = () => {
-    // console.log(heightSquareFruits)
     let counter = 1
     const widthFruit = 90;
     const heightFruit = 70
@@ -38,7 +39,6 @@ export const createFruits = () => {
 }
 
 export const moveMoneky = () => {
-
         let monkeyLeft = parseInt(window.getComputedStyle(moneky).getPropertyValue('left'))
         let monkeyTop = parseInt(window.getComputedStyle(moneky).getPropertyValue('top'))
         moneky.style.left = (monkeyLeft + (10 * horizontalVelocity)) + 'px';
@@ -60,12 +60,12 @@ export const changeDirection = () => {
 let score = 0
 const removed = document.querySelector('.brickRemoved')
 export const removeFruit = () => {
-    const bricks = fruitElemnt.querySelectorAll('.fruit')
+    const fruits = fruitElemnt.querySelectorAll('.fruit')
     const scoreElement = document.querySelector('.score')
-    bricks.forEach(brick => {
+    fruits.forEach(brick => {
         const rectMoneky = moneky.getBoundingClientRect()
-        const brickObj = brick.getBoundingClientRect()
-        if(!brick.classList.contains('remove') && rectMoneky.top <= brickObj.bottom && rectMoneky.left >= brickObj.left && brickObj.right >= rectMoneky.right) {
+        const rectFruit = brick.getBoundingClientRect()
+        if(!brick.classList.contains('remove') && rectMoneky.top <= rectFruit.bottom && rectMoneky.left >= rectFruit.left && rectFruit.right >= rectMoneky.right) {
             brick.classList.add('remove')
             score += 10
             scoreElement.innerHTML = `Score: <strong>${score}</strong>`
@@ -85,9 +85,7 @@ export const movePaddle = () => {
         }
         else if (event.key == 'ArrowLeft' && paddle.offsetLeft > 0) {
             paddle.style.left = `${paddle.offsetLeft - 10}px`
-        }
-        // console.log(rectMoneky, rectPaddle)
-        
+        }     
     })
 }
 
@@ -95,10 +93,8 @@ export const movePaddle = () => {
 
 export const clock = () => {
     const clock = document.querySelector('.clock')
-    // if(angle < 310) {
         clock.style.backgroundImage = `conic-gradient(rgb(226, 226, 226) ${angle}deg, white ${angle}deg)`
         clock.style.transform = `scale(0.95)`
-    // } else 
     if(angle >= 310) {
         clock.style.backgroundImage = `conic-gradient(rgb(56, 56, 56) ${angle}deg, white ${angle}deg)`
         clock.style.transform = `scale(1.05)`
@@ -144,11 +140,12 @@ const  lostChance = () => {
 const randomPositionMonkey = () => {
     const rect = square.getBoundingClientRect()
     const rectMoneky = moneky.getBoundingClientRect()
+    moneky.style.opacity = '1'
     
     const randomLeft = Math.floor((Math.random() * (rect.right - rect.left - (2 * rectMoneky.width))) + rectMoneky.width)
-   
+//    console.log("random", randomLeft, rect.bottom-300)
     moneky.style.left = `${randomLeft}px`
-    moneky.style.top = `${rect.bottom - 200}px`
+    moneky.style.top = `${rect.bottom - 300}px`
 }
 randomPositionMonkey()
 
@@ -160,9 +157,9 @@ const gameLost = (chanceNumber) => {
     // console.log(rectBody, rectLostGame)
     lostGame.style.top = `${rectBody.height / 2 - (heightLostGame / 2)}px`
     lostGame.style.left = `${rectBody.width / 2 - (widthLostGame.width / 2)}px`
-    console.log(lostGame.style.top, lostGame.style.left)
+    // console.log(lostGame.style.top, lostGame.style.left)
     const chanceNumberRemain = lostGame.querySelector('h3')
-    console.log(chanceNumberRemain)
+    // console.log(chanceNumberRemain)
     if(chanceNumber == 0) {
         chanceNumberRemain.innerHTML = `Game Over!!!!`
         chanceNumberRemain.style.color = 'red'
@@ -172,6 +169,7 @@ const gameLost = (chanceNumber) => {
     lostGame.style.display = 'flex'
     if(!restart){
 
+        // restart = true
         clearInterval(id)
         // clearInterval(id2)
     }
@@ -189,9 +187,12 @@ infinitLoop()
 
 const restartBtn = document.querySelector('.gameLost button')
 restartBtn.addEventListener('click', () => {
+    // clearInterval(id)
     randomPositionMonkey()
     console.log(id)
-    clearInterval(id)
+    // moveMoneky()
+    horizontalVelocity = 1; 
+    verticalVelocity = 1
     infinitLoop()
 
     lostGame.style.display = 'none'
@@ -202,12 +203,12 @@ const extremeSquare = () => {
     const rectMoneky = moneky.getBoundingClientRect()
     const rectsquare = square.getBoundingClientRect()
     if(rectMoneky.bottom >= rectPaddle.top && rectPaddle.left <= rectMoneky.right && rectPaddle.right >= rectMoneky.left) {
-        console.log("yes")
+        // console.log("yes")
         verticalVelocity = -verticalVelocity
     }
     if(rectMoneky.top >= rectsquare.bottom) {
         moneky.style.opacity = '0'
-        lostChance(4)
+        lostChance()
         
         
     }
