@@ -133,7 +133,7 @@ body{
 }
 .gameLost button:hover {
     color: blue;
-    background: rgba(245, 245, 245, 0.637);
+    background: rgba(245, 245, 245, 0.904);
     border: 2px solid rgba(0, 0, 255, 0.836);
     transition: background-color 0.6s ease, color 0.6s ease;
 }

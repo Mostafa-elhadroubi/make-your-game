@@ -95,9 +95,9 @@ export const movePaddle = () => {
 
 export const clock = () => {
     const clock = document.querySelector('.clock')
-        clock.style.backgroundImage = `conic-gradient(rgb(170, 159, 159) ${angle}deg, rgba(218, 207, 207, 0.94) ${angle}deg)`
+        clock.style.backgroundImage = `conic-gradient(rgba(26, 23, 194, 0.75) ${angle}deg, rgba(218, 207, 207, 0.94) ${angle}deg)`
     if(angle >= 310) {
-        clock.style.backgroundImage = `conic-gradient(rgb(207, 25, 25) ${angle}deg, rgba(218, 207, 207, 0.94) ${angle}deg)`
+        clock.style.backgroundImage = `conic-gradient(rgba(207, 25, 25, 0.78) ${angle}deg, rgba(218, 207, 207, 0.94) ${angle}deg)`
         clock.style.transform = `scale(1.05)`
         clock.style.transition = `transform 1s ease`
     }
@@ -114,7 +114,7 @@ const intervalClock = () => {
 }
 intervalClock()
 const chanceElmt = document.querySelector('.chance')
-export const createChances = (chanceNumber) => {
+export const createChances = () => {
     const fruits = ['apple.png', 'apricot.png', 'banana.png', 'cherry.png',
         'coconut.png', 'fig.png', 'grape.png', 'kiwi.png', 'lemon.png',
         'orange.png', 'pear.png', 'strawberry.png', 'watermelon.png',
@@ -138,10 +138,15 @@ export const createChances = (chanceNumber) => {
 const  lostChance = () => {
     const chance = document.querySelectorAll('.chance img')
     console.log(chance[currentChanceNumber-1], currentChanceNumber)
-    if(!chance[currentChanceNumber-1].classList.contains('disappear')){
+    if(chance[currentChanceNumber-1] && !chance[currentChanceNumber-1].classList.contains('disappear')){
         chance[currentChanceNumber-1].classList.add('disappear')
-        currentChanceNumber--
-        gameLost(currentChanceNumber)
+        --currentChanceNumber
+        console.log(chance [currentChanceNumber-1],currentChanceNumber)
+        if(currentChanceNumber != 0) {
+            gameLost(currentChanceNumber, "Try again")
+        } else {
+            gameLost(currentChanceNumber, "Restart")
+        }
     }
         
 }
@@ -159,22 +164,25 @@ const randomPositionMonkey = () => {
 randomPositionMonkey()
 
 const lostGame = document.querySelector('.gameLost')
-const gameLost = (currentChanceNumber) => {
+const lostGameBtn = lostGame.querySelector('button')
+const gameLost = (currentChanceNumber, btn) => {
     const rectBody = document.querySelector('body').getBoundingClientRect()
     const widthLostGame = parseInt(getComputedStyle(lostGame).getPropertyValue('width'))
     const heightLostGame = parseInt(getComputedStyle(lostGame).getPropertyValue('height'))
     lostGame.style.top = `${rectBody.height / 2 - (heightLostGame / 2)}px`
     lostGame.style.left = `${rectBody.width / 2 - (widthLostGame.width / 2)}px`
     const chanceNumberRemain = lostGame.querySelector('h3')
-    console.log("gamelost",currentChanceNumber)
+    console.log("gamelost",currentChanceNumber == 0)
     if(currentChanceNumber == 0) {
+        console.log('was read')
         chanceNumberRemain.innerHTML = `Game Over!!!!`
         chanceNumberRemain.style.color = 'red'
-        currentChanceNumber = chanceNumber
-        chanceElmt.innerHTML = ''
-        createChances(chanceNumber)
+        lostGameBtn.innerHTML = `${btn}`
+        lostGame.querySelector('h1').innerHTML = `Total Score: ${score}`
+        
     } else {
         chanceNumberRemain.innerHTML = `Number of chance remains: <strong>${currentChanceNumber}</strong>`
+        lostGameBtn.innerHTML = `${btn}`
     }
     lostGame.style.display = 'flex'
     clearInterval(id)
@@ -192,36 +200,38 @@ id = setInterval(() => {
 infinitLoop()
 
 const restartBtn = document.querySelector('.gameLost button')
-restartBtn.addEventListener('click', () => {
-    score = 0
+const restartGame = () => {
+    if(lostGameBtn.innerHTML == 'Restart') {
+        score = 0
+        currentChanceNumber = chanceNumber
+        scoreElement.innerHTML = `Score: <strong>${score}</strong>`
+        chanceElmt.innerHTML = ''
+        fruitElemnt.innerHTML = ''
+        createChances(currentChanceNumber)
+        createFruits()
+    }
     angle = 0;
     horizontalVelocity = 1; 
     verticalVelocity = 1;
-    scoreElement.innerHTML = `Score: <strong>${score}</strong>`
-    fruitElemnt.innerHTML = ''
     clock()
-    createFruits()
     intervalClock()
-    randomPositionMonkey()
-    console.log(id)    
+    randomPositionMonkey()   
     infinitLoop()
-
     lostGame.style.display = 'none'
-
-})
+    
+}
+restartBtn.addEventListener('click', restartGame)
 const extremeSquare = () => {
     const rectPaddle = paddle.getBoundingClientRect()
     const rectMoneky = moneky.getBoundingClientRect()
     const rectsquare = square.getBoundingClientRect()
     if(rectMoneky.bottom >= rectPaddle.top && rectPaddle.left <= rectMoneky.right && rectPaddle.right >= rectMoneky.left) {
-        // console.log("yes")
         verticalVelocity = -verticalVelocity
     }
     if(rectMoneky.top >= rectsquare.bottom) {
+        console.log(currentChanceNumber)
         moneky.style.opacity = '0'
         lostChance()
-        
-        
     }
 }
 
