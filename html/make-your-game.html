@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make your game</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/make-your-game.css">
+</head>
+<body>
+    <div class="container">
+        <div class="elements">
+            <h3>Level: <strong>1</strong></h3>
+            <p class="score">Score: <strong>0</strong></p>
+            <div class="clock">Timer: <strong>00:00</strong></div>
+            <div class="chance">Chances:</div>  
+        </div>
+        <div class="gameSquare">
+            <div class="bricks"></div>
+            <div class="paddle"></div>
+            <div class="ball"></div>
+        </div>
+        <div class="gameLost">
+            <p>Level: <strong>3</strong></p>
+            <h3>Game Over!!!</h3>
+            <h2></h2>
+            <button>Restart</button>
+        </div>
+    </div>
+
+
+    <script type="module">
+        import {createBricks} from '../js/createBricks.js'
+        import {movePaddle, resetTime, startGame} from '../js/moveBall.js'
+        import {createChances} from '../js/removeBricks.js'
+        createBricks();
+        startGame()
+        movePaddle()
+        createChances()
+        resetTime()
+    </script>
+</body>
+</html>

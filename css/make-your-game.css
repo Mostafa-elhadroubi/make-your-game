@@ -3,12 +3,12 @@
     margin: 0;
     box-sizing: border-box;
 }
+:root {
+    --paddle-width: 150px;
+}
 body{
     height: 100vh;
-    background: url("./images/wonderful-world-beautiful.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    /* overflow: hidden; */
+    background: rgb(48, 46, 46);
 }
 .container {
     /* background: red; */
@@ -19,81 +19,80 @@ body{
     height: 100vh;
 }
 .elements {
-    width: 100%;
+    width: 75%;
     height: 150px;
     /* background: red; */
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-evenly;
     align-items: center;
     font-size: 24px;
     color: white;
 }
-.elements .clock {
-    width: 100px;
-    height: 100px;
-    /* background-image: rgb(170, 159, 159); */
-    background-image: conic-gradient(rgba(218, 207, 207, 0.94) 0deg,rgba(218, 207, 207, 0.94) 0deg);
-    border-radius: 50%;
-    border: 2px solid rgb(255, 255, 255);
-    /* transition: background-color 0.5s ease; */
+.elements .chance{
+    display: flex;
+    /* background: red; */
+    justify-content: space-between;
+    width: 350px;
 }
-.elements .chance img{
+.elements .chance .chanceDiv{
     width: 60px;
+    height: 30px;
+    border-radius: 5px;
     /* opacity: 0.2; */
-    margin-right: 5px;
+    /* margin-right: 5px; */
 }
 .elements .chance .disappear {
-    opacity: 0.3;
+    opacity: 0.1;
 }
 .gameSquare{
     height: 600px;
-    width: 1200px;
+    width: 75%;
     border: 2px solid white;
-    position: relative;
-    /* box-shadow: 3px 3px 30px #c0bcbc,
-                -3px -3px 30px #c0bcbc; */
     border-radius: 10px;
-    /* background: url("./images/wonderful-world-beautiful.jpg");
-    background-repeat: no-repeat;
-    background-size: cover; */
-
-}
-.fruits {
-    width: 100%;  /* Full width of the container */
-    height: 280px; /* Set height to fit your design */
-    /* background: purple; */
     position: relative;
 }
-.fruits img {
-    display: block;
+.bricks {
+    width: 100%;  /* Full width of the container */
+    height: 25%; /* Set height to fit your design */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    justify-content: center;
+    background: purple;
+    margin-top: 5px;
+    /* position: relative; */
 }
-.fruit {
-    width: 80px;
-    height: 60px;
+.brick {
+    width: 100px;
+    height: 30px;
     border-radius: 5px;
+    /* position: absolute; */
+}
+
+.ball{
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
     position: absolute;
-}
-.remove{
-    opacity: 0;
-}
+    top: calc(100% - 100px);
+    left: calc(100% - 200px); 
+} 
 .paddle{
-    width: 150px;
+    width: var(--paddle-width);
     height: 20px;
     background: rgb(8, 8, 8);
     border-radius: 10px;
     position: absolute;
     bottom: 10px;
-    /* transform: translate(50%); */
+    left: calc(100% / 2 - var(--paddle-width)/2);
 }
-.moneky{
-    width: 60px;
-    height: 60px;
-    /* background: #ff0000; */
-    position: absolute;
-    /* border-radius: 50%; */
-    /* top: 550px;
-    left: 300px; */
+
+.remove{
+    opacity: 0;
 }
+
 .gameLost {
     width: 400px;
     height: 200px;
@@ -109,6 +108,11 @@ body{
     display: none;
    
     /* transform: translate(50%, 50%); */
+}
+.gameLost img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
 }
 .gameLost p {
     font-size: 24px;
@@ -130,6 +134,11 @@ body{
     font-size: 22px;
     color: whitesmoke;
     cursor: pointer;
+}
+.gameLost button i{
+    width: 30px;
+    height: 20px;
+    color: whitesmoke;
 }
 .gameLost button:hover {
     color: blue;
