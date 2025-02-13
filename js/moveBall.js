@@ -68,9 +68,12 @@ export const removeBrick = () => {
 
 
 
+
 const widthPaddle = parseInt(getComputedStyle(paddle).getPropertyValue('width'))
 const maxWidth = Math.floor(widthSquareBricks - widthPaddle)
 const continueOrRestart = document.querySelector('.continueOrRestart')
+const continueBtn = continueOrRestart.querySelector('button:nth-child(1)')
+const btnRestart = continueOrRestart.querySelector('button:nth-child(2)')
 export const movePaddle = () => {
     window.addEventListener('keydown', (event) => {
        console.log(event.key)
@@ -81,7 +84,23 @@ export const movePaddle = () => {
         else if (event.key == 'ArrowLeft' && paddle.offsetLeft > 0) {
             paddle.style.left = `${paddle.offsetLeft - 10}px`
         } else if (event.key.toLowerCase() == 'p')    {
-            continueOrRestart.classList.toggle('appear')
+            if(!continueOrRestart.classList.contains('appear')) {
+                continueOrRestart.classList.toggle('appear')
+                clearInterval(id)
+                clearInterval(time)
+            } else {
+                continueOrRestart.classList.toggle('appear')
+                startGame()
+            }
+            continueBtn.addEventListener('click', () => {
+                startGame()
+                continueOrRestart.classList.toggle('appear')
+
+            })
+            btnRestart.addEventListener('click', () => {
+                continueOrRestart.classList.toggle('appear')
+                restartGame()
+            })
         }
     })
 }
@@ -161,7 +180,7 @@ const levelElement = lostGame.querySelector('p')
 let level = 1
 export const restartGame = () => {
     console.log('clicked')
-    if(lostGameBtn.textContent.includes('Restart') || lostGameBtn.textContent.includes('Success')) {
+    if(lostGameBtn.textContent.includes('Restart') || lostGameBtn.textContent.includes('Success') || btnRestart.textContent.includes('Restart')) {
         console.log(currentChanceNumber, "before")
         currentChanceNumber = 4
         console.log(currentChanceNumber, "after")
@@ -232,9 +251,6 @@ const gameLost = (currentChanceNumber, btn) => {
         lostGame.querySelector('h2').innerHTML = `Total Score: ${score}` 
         lostGameBtn.innerHTML = `${btn} <i class="fa-solid fa-arrow-right"></i>`
         lostGameBtn.style.background = '#48b02c'
-        // level++
-        
-        // addScore += 5
     }
     if(currentChanceNumber == 0) {
         console.log('was read')
@@ -263,7 +279,7 @@ export const startGame = () => {
         extremeSquare()
         removeBrick()
         if(isWin() == true) {
-            // clearInterval(id)
+            clearInterval(id)
             console.log('is winner!!!!')
            gameLost(4, "Success")
         }
