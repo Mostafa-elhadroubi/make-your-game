@@ -70,7 +70,7 @@ export const removeBrick = () => {
 
 const widthPaddle = parseInt(getComputedStyle(paddle).getPropertyValue('width'))
 const maxWidth = Math.floor(widthSquareBricks - widthPaddle)
-
+const continueOrRestart = document.querySelector('.continueOrRestart')
 export const movePaddle = () => {
     window.addEventListener('keydown', (event) => {
        console.log(event.key)
@@ -81,7 +81,7 @@ export const movePaddle = () => {
         else if (event.key == 'ArrowLeft' && paddle.offsetLeft > 0) {
             paddle.style.left = `${paddle.offsetLeft - 10}px`
         } else if (event.key.toLowerCase() == 'p')    {
-            
+            continueOrRestart.classList.toggle('appear')
         }
     })
 }

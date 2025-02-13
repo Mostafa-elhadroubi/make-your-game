@@ -147,4 +147,27 @@ body{
     transition: background-color 0.6s ease, color 0.6s ease;
 }
 
-
+.continueOrRestart {
+    background: red;
+    width: 300px;
+    height: 150px;
+    text-align: center;
+    align-content: center;
+    display: none;
+}
+.appear{
+    display: block;
+}
+.continueOrRestart button{
+    padding: 10px 16px;
+    font-size: 20px;
+    border: none;
+    border-radius: 10px;
+    width: 120px;
+    transition: all 0.5s ease-in;
+}
+.continueOrRestart button:hover{
+    color: white;
+    background: rgb(48, 46, 46);
+    border: 2px solid white;
+}
