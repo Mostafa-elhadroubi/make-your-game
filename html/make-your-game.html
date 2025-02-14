@@ -37,11 +37,13 @@
         import {createBricks} from '../js/createBricks.js'
         import {movePaddle, resetTime, startGame} from '../js/moveBall.js'
         import {createChances} from '../js/removeBricks.js'
+        import {throttleFunction} from '../js/throttle.js'
         createBricks();
         startGame()
         movePaddle()
         createChances()
         resetTime()
+        throttleFunction()
     </script>
 </body>
 </html>

@@ -2,13 +2,13 @@ import { square, paddle, brickElement, createBricks} from "./createBricks.js";
 import { createChances, scoreElement, chanceElmt } from "./removeBricks.js"
 export const ball = document.querySelector('.ball')
 let widthSquareBricks = parseInt(getComputedStyle(brickElement).getPropertyValue('width'))
-let heightSquareBricks = parseInt(getComputedStyle(brickElement).getPropertyValue('height'))
 let horizontalVelocity = 1;  // Horizontal movement speed
 let verticalVelocity = 1; 
 let addScore = 10;
-export let id;
-// let topBall = (square.getBoundingClientRect().bottom - square.getBoundingClientRect().y- 250)
-// console.log(square.getBoundingClientRect().bottom - square.getBoundingClientRect().y)
+let minute = 0
+let second  = 1;
+let id;
+let time;
 export const moveBall = () => {
     let leftBall = parseInt(window.getComputedStyle(ball).getPropertyValue('left'))
     let topBall = parseInt(window.getComputedStyle(ball).getPropertyValue('top'))
@@ -27,15 +27,11 @@ export const changeDirection = () => {
         }
 }
 
-
-
-
 export const removeBrick = () => {
     const bricks = brickElement.querySelectorAll('.brick');
     bricks.forEach(brick => {
         const rectBall = ball.getBoundingClientRect();
         const rectBrick = brick.getBoundingClientRect();
-
         // Check if the ball and brick are overlapping
         if (!brick.classList.contains('remove') && 
             rectBall.right > rectBrick.left && 
@@ -67,11 +63,6 @@ export const removeBrick = () => {
     });
 };
 
-
-
-
-
-
 const widthPaddle = parseInt(getComputedStyle(paddle).getPropertyValue('width'))
 const maxWidth = Math.floor(widthSquareBricks - widthPaddle)
 const continueOrRestart = document.querySelector('.continueOrRestart')
@@ -79,8 +70,6 @@ const continueBtn = continueOrRestart.querySelector('button:nth-child(1)')
 const btnRestart = continueOrRestart.querySelector('button:nth-child(2)')
 export const movePaddle = () => {
     window.addEventListener('keydown', (event) => {
-       console.log(event.key)
-        // console.log(event)
         if(event.key == 'ArrowRight' && paddle.offsetLeft < maxWidth) {
             paddle.style.left = `${paddle.offsetLeft + 10}px`
         }
@@ -135,27 +124,20 @@ export const extremeSquare = () => {
         }
     }
     if(rectBall.top > rectsquare.bottom) {
-        // console.log(currentChanceNumber)
         ball.style.opacity = '0'
         lostChance()
     }
 }
 
-export const randomPositionMonkey = () => {
+export const randomPositionBall = () => {
     const rect = square.getBoundingClientRect()
     const rectBall = ball.getBoundingClientRect()
-    // const rectPaddle = paddle.getBoundingClientRect()
     ball.style.opacity = '1'
-    let topBall = parseInt(window.getComputedStyle(ball).getPropertyValue('top'))
     const randomLeft = Math.floor((Math.random() * (rect.right - rect.left - (2 * rectBall.width))) + rectBall.width)
     ball.style.left = `${randomLeft}px`
-    ball.style.top = `${topBall - 150}px`
+    ball.style.top = 'calc(100% - 300px)'
 }
 
-
-
-let minute = 0
-let second  = 1;
 export const timer = () => {
     const clock = document.querySelector('.clock')
     if (second == 60) {
@@ -167,7 +149,7 @@ export const timer = () => {
     }
     second++
 }
-export let time;
+
 export const resetTime = () => {
     if (time) {
         clearInterval(time)
@@ -175,15 +157,8 @@ export const resetTime = () => {
     time = setInterval(timer,1000)
 }
 
-
-const resetBallPosition = () => {
-    ball.style.top = 'calc(100% - 300px)'; // Or any value that sets the ball to its starting position
-    ball.style.left = 'calc(100% - 200px)'; // Or any value that sets the ball to its starting position
-}
-
-
-let currentChanceNumber = 4
-export let score = 0
+let chanceNumber = 4
+let score = 0
 const restartBtn = document.querySelector('.gameLost button')
 const lostGame = document.querySelector('.gameLost')
 const lostGameBtn = lostGame.querySelector('button')
@@ -191,13 +166,10 @@ const levelElement = lostGame.querySelector('p')
 let level = 1
 export const restartGame = () => {
     if(lostGameBtn.textContent.includes('Restart') || lostGameBtn.textContent.includes('Success') || btnRestart.parentElement.classList.contains('appear')) {
-        console.log(currentChanceNumber, "before")
-        currentChanceNumber = 4
-        console.log(currentChanceNumber, "after")
+        chanceNumber = 4
         score = 0
         minute = 0
         second = 0
-        
         levelElement.innerHTML = `Level: <strong>${level}</strong>`
         scoreElement.innerHTML = `Score: <strong>${score}</strong>`
         chanceElmt.innerHTML = ''
@@ -205,8 +177,8 @@ export const restartGame = () => {
         brickElement.innerHTML = ''
         createChances()
         createBricks()
-        verticalVelocity = -verticalVelocity;
     } 
+    verticalVelocity = -verticalVelocity;
     if(id) {
         clearInterval(id)
     }
@@ -217,8 +189,7 @@ export const restartGame = () => {
     startGame()
     timer()
     resetTime()
-    randomPositionMonkey()   
-    resetBallPosition();
+    randomPositionBall()   
     lostGame.style.display = 'none'
     
 }
@@ -233,35 +204,26 @@ export const isWin = () => {
 
 export const  lostChance = () => {
     const chance = document.querySelectorAll('.chance .chanceDiv')
-    console.log(chance[currentChanceNumber-1], currentChanceNumber)
-    if(chance[currentChanceNumber-1] && currentChanceNumber != 0 &&!chance[currentChanceNumber-1].classList.contains('disappear')){
-        chance[currentChanceNumber-1].classList.add('disappear')
-        currentChanceNumber--
-        if(currentChanceNumber != 0) {
-            gameLost(currentChanceNumber, "Try again")
+    console.log(chance[chanceNumber-1], chanceNumber)
+    if(chance[chanceNumber-1] && chanceNumber != 0 &&!chance[chanceNumber-1].classList.contains('disappear')){
+        chance[chanceNumber-1].classList.add('disappear')
+        chanceNumber--
+        if(chanceNumber != 0) {
+            gameLost(chanceNumber, "Try again")
         } else {
-            gameLost(currentChanceNumber, "Restart")
+            gameLost(chanceNumber, "Restart")
         }
     }
-    resetBallPosition(); 
 }
 
-
-
-
-
-
-// import {id} from './startGame.js'
-
-// import { time } from "./timer.js";
-const gameLost = (currentChanceNumber, btn) => {
+const gameLost = (chanceNumber, btn) => {
     const rectBody = document.querySelector('body').getBoundingClientRect()
     const widthLostGame = parseInt(getComputedStyle(lostGame).getPropertyValue('width'))
     const heightLostGame = parseInt(getComputedStyle(lostGame).getPropertyValue('height'))
     lostGame.style.top = `${rectBody.height / 2 - (heightLostGame / 2)}px`
     lostGame.style.left = `${rectBody.width / 2 - (widthLostGame.width / 2)}px`
     const chanceNumberRemain = lostGame.querySelector('h3')
-    console.log("gamelost",currentChanceNumber == 0)
+    console.log("gamelost",chanceNumber == 0)
     if(isWin()) {
         chanceNumberRemain.innerHTML = `<img src="../icon/verified.png"/>`
         lostGame.querySelector('h2').innerHTML = ''
@@ -269,25 +231,23 @@ const gameLost = (currentChanceNumber, btn) => {
         lostGameBtn.innerHTML = `${btn} <i class="fa-solid fa-arrow-right"></i>`
         lostGameBtn.style.background = '#48b02c'
     }
-    if(currentChanceNumber == 0) {
+    if(chanceNumber == 0) {
         console.log('was read')
         chanceNumberRemain.innerHTML = `Game Over!!!!`
         chanceNumberRemain.style.color = 'red'
         lostGameBtn.innerHTML = `${btn}`
         lostGame.querySelector('h2').innerHTML = ''
         lostGame.querySelector('h2').innerHTML = `Total Score: ${score}`   
-    } else if(currentChanceNumber != 0 && !isWin()) {
+    } else if(chanceNumber != 0 && !isWin()) {
         chanceNumberRemain.style.color = 'white'
         lostGame.querySelector('h2').innerHTML = ''
-        chanceNumberRemain.innerHTML = `Chance remains: <strong>${currentChanceNumber}</strong>`
+        chanceNumberRemain.innerHTML = `Chance remains: <strong>${chanceNumber}</strong>`
         lostGameBtn.innerHTML = `${btn}`
     }
     lostGame.style.display = 'flex'
     clearInterval(id)
     clearInterval(time)
 }   
-
-
 
 export const startGame = () => {
     if(id) {

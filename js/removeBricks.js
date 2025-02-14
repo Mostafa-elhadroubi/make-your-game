@@ -1,4 +1,4 @@
-import { brickElement, bricksColor} from "./createBricks.js";
+import {bricksColor} from "./createBricks.js";
 export const scoreElement = document.querySelector('.score')
 
 
