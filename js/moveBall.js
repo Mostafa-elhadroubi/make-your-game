@@ -157,7 +157,7 @@ export const resetTime = () => {
     time = setInterval(timer,1000)
 }
 
-let chanceNumber = 4
+let chanceNumber = 3
 let score = 0
 const restartBtn = document.querySelector('.gameLost button')
 const lostGame = document.querySelector('.gameLost')
@@ -166,7 +166,7 @@ const levelElement = lostGame.querySelector('p')
 let level = 1
 export const restartGame = () => {
     if(lostGameBtn.textContent.includes('Restart') || lostGameBtn.textContent.includes('Success') || btnRestart.parentElement.classList.contains('appear')) {
-        chanceNumber = 4
+        chanceNumber = 3
         score = 0
         minute = 0
         second = 0

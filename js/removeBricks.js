@@ -6,7 +6,7 @@ export const scoreElement = document.querySelector('.score')
 export const chanceElmt = document.querySelector('.chance')
 export const createChances = () => {
     const validBrickIndex = []
-    for(let i = 0; i < 4; i++) {
+    for(let i = 0; i < 3; i++) {
         const brickIndex = Math.floor(Math.random() * bricksColor.length)
         if(!validBrickIndex.includes(brickIndex)){
             validBrickIndex.push(brickIndex)

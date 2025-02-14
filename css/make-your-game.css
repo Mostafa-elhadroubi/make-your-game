@@ -94,7 +94,7 @@ body{
 .gameLost {
     width: 300px;
     height: 200px;
-    background: linear-gradient(to bottom right, rgb(4, 12, 88), rgb(175, 181, 238));
+    background: linear-gradient(to bottom right, rgb(43, 43, 48), rgb(126, 126, 133));
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -116,14 +116,13 @@ body{
 .gameLost h3{
     color: rgba(255, 255, 255, 0.938);
     font-size: 24px;
-    /* font-weight: bold; */
 }
 .gameLost h3 strong {
     color: rgb(226, 16, 16);
     font-size: 28px;
 }
 .gameLost button{
-    background: rgba(25, 25, 224, 0.911);
+    background: rgba(19, 19, 20, 0.911);
     padding: 12px 20px;
     border: 2px solid rgba(215, 215, 221, 0.856);
     border-radius: 5px;
@@ -137,19 +136,28 @@ body{
     color: whitesmoke;
 }
 .gameLost button:hover {
-    color: blue;
+    color: rgba(3, 3, 3, 0.911);
     background: rgba(245, 245, 245, 0.904);
-    border: 2px solid rgba(0, 0, 255, 0.836);
+    border: 2px solid rgba(19, 19, 20, 0.911);
     transition: background-color 0.6s ease, color 0.6s ease;
 }
 
 .continueOrRestart {
-    background: red;
+    background: linear-gradient(to bottom right, rgb(43, 43, 48), rgb(126, 126, 133));
     width: 300px;
     height: 150px;
     text-align: center;
     align-content: center;
+    border-radius: 10px;
+    border: 2px solid white;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
     display: none;
+    position: absolute;
+    top: calc(50%);
+    left: calc(50%);
+    transform: translate(-50%, -50%);
 }
 .appear{
     display: block;
@@ -166,4 +174,10 @@ body{
     color: white;
     background: rgb(48, 46, 46);
     border: 2px solid white;
+}
+
+@media (max-width:600) {
+    .bricks{
+        height: 28%;
+    }
 }

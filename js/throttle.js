@@ -11,6 +11,5 @@ export const throttle = (fn, delay) => {
 export const throttleFunction = () => {
     window.addEventListener('resize', throttle(() => {
         window.location.reload()
-    
     }, 100))
 }
