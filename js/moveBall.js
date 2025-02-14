@@ -6,6 +6,9 @@ let heightSquareBricks = parseInt(getComputedStyle(brickElement).getPropertyValu
 let horizontalVelocity = 1;  // Horizontal movement speed
 let verticalVelocity = 1; 
 let addScore = 10;
+export let id;
+// let topBall = (square.getBoundingClientRect().bottom - square.getBoundingClientRect().y- 250)
+// console.log(square.getBoundingClientRect().bottom - square.getBoundingClientRect().y)
 export const moveBall = () => {
     let leftBall = parseInt(window.getComputedStyle(ball).getPropertyValue('left'))
     let topBall = parseInt(window.getComputedStyle(ball).getPropertyValue('top'))
@@ -91,15 +94,20 @@ export const movePaddle = () => {
             } else {
                 continueOrRestart.classList.toggle('appear')
                 startGame()
+                resetTime()
             }
             continueBtn.addEventListener('click', () => {
+                console.log('coninue clicked')
                 startGame()
-                continueOrRestart.classList.toggle('appear')
+                resetTime()
+                continueOrRestart.classList.remove('appear')
 
             })
             btnRestart.addEventListener('click', () => {
-                continueOrRestart.classList.toggle('appear')
+                console.log('restart clicked')
                 restartGame()
+                resetTime()
+                continueOrRestart.classList.remove('appear')
             })
         }
     })
@@ -161,12 +169,15 @@ export const timer = () => {
 }
 export let time;
 export const resetTime = () => {
+    if (time) {
+        clearInterval(time)
+    }
     time = setInterval(timer,1000)
 }
 
 
 const resetBallPosition = () => {
-    ball.style.top = 'calc(100% - 100px)'; // Or any value that sets the ball to its starting position
+    ball.style.top = 'calc(100% - 300px)'; // Or any value that sets the ball to its starting position
     ball.style.left = 'calc(100% - 200px)'; // Or any value that sets the ball to its starting position
 }
 
@@ -179,8 +190,7 @@ const lostGameBtn = lostGame.querySelector('button')
 const levelElement = lostGame.querySelector('p')
 let level = 1
 export const restartGame = () => {
-    console.log('clicked')
-    if(lostGameBtn.textContent.includes('Restart') || lostGameBtn.textContent.includes('Success') || btnRestart.textContent.includes('Restart')) {
+    if(lostGameBtn.textContent.includes('Restart') || lostGameBtn.textContent.includes('Success') || btnRestart.parentElement.classList.contains('appear')) {
         console.log(currentChanceNumber, "before")
         currentChanceNumber = 4
         console.log(currentChanceNumber, "after")
@@ -195,12 +205,19 @@ export const restartGame = () => {
         brickElement.innerHTML = ''
         createChances()
         createBricks()
+        verticalVelocity = -verticalVelocity;
     } 
-    verticalVelocity = -verticalVelocity;
+    if(id) {
+        clearInterval(id)
+    }
+    if (time) {
+        clearInterval(time)
+    }
+    console.log(lostGameBtn.textContent)
+    startGame()
     timer()
     resetTime()
     randomPositionMonkey()   
-    startGame()
     resetBallPosition();
     lostGame.style.display = 'none'
     
@@ -235,7 +252,7 @@ export const  lostChance = () => {
 
 
 // import {id} from './startGame.js'
-export let id;
+
 // import { time } from "./timer.js";
 const gameLost = (currentChanceNumber, btn) => {
     const rectBody = document.querySelector('body').getBoundingClientRect()
@@ -245,7 +262,7 @@ const gameLost = (currentChanceNumber, btn) => {
     lostGame.style.left = `${rectBody.width / 2 - (widthLostGame.width / 2)}px`
     const chanceNumberRemain = lostGame.querySelector('h3')
     console.log("gamelost",currentChanceNumber == 0)
-    if(isWin() == true) {
+    if(isWin()) {
         chanceNumberRemain.innerHTML = `<img src="../icon/verified.png"/>`
         lostGame.querySelector('h2').innerHTML = ''
         lostGame.querySelector('h2').innerHTML = `Total Score: ${score}` 
@@ -273,12 +290,18 @@ const gameLost = (currentChanceNumber, btn) => {
 
 
 export const startGame = () => {
+    if(id) {
+        clearInterval(id)
+    }
+    if(time) {
+        clearInterval(time)
+    }
     id = setInterval(() => {
         moveBall();
         changeDirection()
         extremeSquare()
         removeBrick()
-        if(isWin() == true) {
+        if(isWin()) {
             clearInterval(id)
             console.log('is winner!!!!')
            gameLost(4, "Success")

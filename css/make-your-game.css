@@ -39,8 +39,6 @@ body{
     width: 60px;
     height: 30px;
     border-radius: 5px;
-    /* opacity: 0.2; */
-    /* margin-right: 5px; */
 }
 .elements .chance .disappear {
     opacity: 0.1;
@@ -76,7 +74,7 @@ body{
     background: #fff;
     border-radius: 50%;
     position: absolute;
-    top: calc(100% - 100px);
+    top: calc(100% - 300px);
     left: calc(100% - 200px); 
 } 
 .paddle{
