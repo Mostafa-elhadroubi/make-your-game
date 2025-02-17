@@ -12,8 +12,8 @@
         <div class="elements">
             <h3>Level: <strong>1</strong></h3>
             <p class="score">Score: <strong>0</strong></p>
-            <div class="clock">Timer: <strong>00:00</strong></div>
-            <div class="chance">Chances:</div>  
+            <div class="clock">Timer: 00:00</div>
+            <div class="chance">Lives:</div>  
         </div>
         <div class="gameSquare">
             <div class="bricks"></div>
@@ -34,16 +34,8 @@
 
 
     <script type="module">
-        import {createBricks} from '../js/createBricks.js'
-        import {movePaddle, resetTime, startGame} from '../js/moveBall.js'
-        import {createChances} from '../js/removeBricks.js'
-        import {throttleFunction} from '../js/throttle.js'
-        createBricks();
-        startGame()
-        movePaddle()
-        createChances()
-        resetTime()
-        throttleFunction()
+        import {init} from '../js/moveBall.js'
+        init()
     </script>
 </body>
 </html>

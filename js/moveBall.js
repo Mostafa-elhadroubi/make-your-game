@@ -1,5 +1,6 @@
 import { square, paddle, brickElement, createBricks} from "./createBricks.js";
 import { createChances, scoreElement, chanceElmt } from "./removeBricks.js"
+import {throttleFunction} from '../js/throttle.js'
 export const ball = document.querySelector('.ball')
 let widthSquareBricks = parseInt(getComputedStyle(brickElement).getPropertyValue('width'))
 let horizontalVelocity = 1;  // Horizontal movement speed
@@ -7,13 +8,18 @@ let verticalVelocity = 1;
 let addScore = 10;
 let minute = 0
 let second  = 1;
-let id;
-let time;
+let ballSpeed = 5;
+let lastTime = 0
+let isGameRunning = true;  // Flag for game running state
+let isTimerRunning = true;
+let isGameLoopRunning = false;
+let isBallLost = false; // Add this flag to track ball collision
+let animationFrameId;
 export const moveBall = () => {
     let leftBall = parseInt(window.getComputedStyle(ball).getPropertyValue('left'))
     let topBall = parseInt(window.getComputedStyle(ball).getPropertyValue('top'))
-    ball.style.left = (leftBall + (10 * horizontalVelocity)) + 'px';
-    ball.style.top = (topBall - (10 * verticalVelocity)) + 'px';
+    ball.style.left = (leftBall + (ballSpeed * horizontalVelocity)) + 'px';
+    ball.style.top = (topBall - (ballSpeed * verticalVelocity)) + 'px';
 }
 
 export const changeDirection = () => {
@@ -45,7 +51,6 @@ export const removeBrick = () => {
     
                 // Determine the smallest overlap to identify the edge hit
                 const minOverlap = Math.min(overlapTop, overlapBottom, overlapLeft, overlapRight);
-    
                 if (minOverlap === overlapTop || minOverlap === overlapBottom) {
                     // If top or bottom collision, reverse vertical velocity
                     verticalVelocity = -verticalVelocity;
@@ -53,8 +58,6 @@ export const removeBrick = () => {
                     // If left or right collision, reverse horizontal velocity
                     horizontalVelocity = -horizontalVelocity;
                 }
-    
-            // verticalVelocity = -verticalVelocity;
             brick.classList.add('remove');
             score += addScore;
             scoreElement.innerHTML = `Score: <strong>${score}</strong>`;
@@ -68,32 +71,35 @@ const maxWidth = Math.floor(widthSquareBricks - widthPaddle)
 const continueOrRestart = document.querySelector('.continueOrRestart')
 const continueBtn = continueOrRestart.querySelector('button:nth-child(1)')
 const btnRestart = continueOrRestart.querySelector('button:nth-child(2)')
+
 export const movePaddle = () => {
     window.addEventListener('keydown', (event) => {
         if(event.key == 'ArrowRight' && paddle.offsetLeft < maxWidth) {
-            paddle.style.left = `${paddle.offsetLeft + 10}px`
+            paddle.style.left = `${paddle.offsetLeft + 15}px`
         }
         else if (event.key == 'ArrowLeft' && paddle.offsetLeft > 0) {
-            paddle.style.left = `${paddle.offsetLeft - 10}px`
+            paddle.style.left = `${paddle.offsetLeft - 15}px`
         } else if (event.key.toLowerCase() == 'p')    {
             if(!continueOrRestart.classList.contains('appear')) {
                 continueOrRestart.classList.toggle('appear')
-                clearInterval(id)
-                clearInterval(time)
+                isGameRunning = false
+                stopTimer()
             } else {
                 continueOrRestart.classList.toggle('appear')
+                isGameRunning = true
                 startGame()
-                resetTime()
+                isTimerRunning = true; // Resume the timer
+                requestAnimationFrame(timer);
             }
             continueBtn.addEventListener('click', () => {
-                console.log('coninue clicked')
-                startGame()
-                resetTime()
-                continueOrRestart.classList.remove('appear')
+                isGameRunning = true; // Resume the game
+                startGame(); // Restart the game loop
+                isTimerRunning = true; // Resume the timer
+                requestAnimationFrame(timer); // Restart the timer loop
+                continueOrRestart.classList.remove('appear'); // Hide the pause menu
 
             })
             btnRestart.addEventListener('click', () => {
-                console.log('restart clicked')
                 restartGame()
                 resetTime()
                 continueOrRestart.classList.remove('appear')
@@ -109,13 +115,11 @@ export const extremeSquare = () => {
     //Check if the ball is within the bounds of the paddle (it could be hitting the top or side of the paddle)
     if (rectBall.bottom > rectPaddle.top && rectBall.top < rectPaddle.bottom &&
         rectBall.right > rectPaddle.left && rectBall.left < rectPaddle.right) {
-        
         // Check if the ball hit the **top** of the paddle
         if (rectBall.bottom > rectPaddle.top && rectBall.top < rectPaddle.top) {
             // Ball hit the top of the paddle, only reverse vertical velocity
             verticalVelocity = -verticalVelocity;
         }
-
         // If the ball hit the **left or right** side of the paddle
         else {
             // Reverse both horizontal and vertical velocities
@@ -124,6 +128,7 @@ export const extremeSquare = () => {
         }
     }
     if(rectBall.top > rectsquare.bottom) {
+        isBallLost = true
         ball.style.opacity = '0'
         lostChance()
     }
@@ -136,27 +141,39 @@ export const randomPositionBall = () => {
     const randomLeft = Math.floor((Math.random() * (rect.right - rect.left - (2 * rectBall.width))) + rectBall.width)
     ball.style.left = `${randomLeft}px`
     ball.style.top = 'calc(100% - 300px)'
+    isBallLost = false
 }
 
-export const timer = () => {
+export const timer = (timestamp) => {
     const clock = document.querySelector('.clock')
-    if (second == 60) {
-        minute += 1
-        second = 0
-        clock.innerHTML = `Timer: <strong>${String(minute).padStart(2, "0")}:${String(second).padStart(2, "0")}</strong>`
-    } else {
-        clock.innerHTML = `Timer: ${String(minute).padStart(2, "0")}:${String(second).padStart(2, "0")}`
+    if(!lastTime) lastTime = timestamp // Initialize lastTime on the first call
+    const deltaTime = timestamp - lastTime// Calculate time difference
+    if (deltaTime >= 1000) {// Update every second (1000ms)
+        if (second == 60) {
+            minute++
+            second = 0
+        } 
+            clock.innerHTML = `Timer: ${String(minute).padStart(2, "0")}:${String(second).padStart(2, "0")}`
+            lastTime = timestamp // Reset lastTime after updating the timer
+        second++
     }
-    second++
+    if(isTimerRunning) {
+        requestAnimationFrame(timer)
+    }
 }
 
 export const resetTime = () => {
-    if (time) {
-        clearInterval(time)
-    }
-    time = setInterval(timer,1000)
+    isTimerRunning = true
+    lastTime = 0
+    minute = 0
+    second = 0
+    const clock = document.querySelector('.clock');
+    clock.innerHTML = `Timer: <strong>${String(minute).padStart(2, "0")}:${String(second).padStart(2, "0")}</strong>`; // Update the timer display immediately
+    requestAnimationFrame(timer)
 }
-
+export const stopTimer = () => {
+    isTimerRunning = false;  // Stop the timer loop
+}
 let chanceNumber = 3
 let score = 0
 const restartBtn = document.querySelector('.gameLost button')
@@ -173,22 +190,25 @@ export const restartGame = () => {
         levelElement.innerHTML = `Level: <strong>${level}</strong>`
         scoreElement.innerHTML = `Score: <strong>${score}</strong>`
         chanceElmt.innerHTML = ''
-        chanceElmt.innerHTML += 'Chances:'
+        chanceElmt.innerHTML += 'Lives:'
         brickElement.innerHTML = ''
         createChances()
         createBricks()
     } 
+    // Cancel the previous animation frame if it exists
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+    }
     verticalVelocity = -verticalVelocity;
-    if(id) {
-        clearInterval(id)
+    isGameRunning = true
+    isGameLoopRunning = false
+    if (chanceNumber === 0) {
+        resetTime(); // Reset the timer only when all chances are lost
+    } else {
+        isTimerRunning = true; // Resume the timer if not all chances are lost
+        requestAnimationFrame(timer);
     }
-    if (time) {
-        clearInterval(time)
-    }
-    console.log(lostGameBtn.textContent)
     startGame()
-    timer()
-    resetTime()
     randomPositionBall()   
     lostGame.style.display = 'none'
     
@@ -204,13 +224,14 @@ export const isWin = () => {
 
 export const  lostChance = () => {
     const chance = document.querySelectorAll('.chance .chanceDiv')
-    console.log(chance[chanceNumber-1], chanceNumber)
     if(chance[chanceNumber-1] && chanceNumber != 0 &&!chance[chanceNumber-1].classList.contains('disappear')){
         chance[chanceNumber-1].classList.add('disappear')
         chanceNumber--
         if(chanceNumber != 0) {
             gameLost(chanceNumber, "Try again")
+            stopTimer()
         } else {
+            stopTimer()
             gameLost(chanceNumber, "Restart")
         }
     }
@@ -223,16 +244,14 @@ const gameLost = (chanceNumber, btn) => {
     lostGame.style.top = `${rectBody.height / 2 - (heightLostGame / 2)}px`
     lostGame.style.left = `${rectBody.width / 2 - (widthLostGame.width / 2)}px`
     const chanceNumberRemain = lostGame.querySelector('h3')
-    console.log("gamelost",chanceNumber == 0)
     if(isWin()) {
         chanceNumberRemain.innerHTML = `<img src="../icon/verified.png"/>`
         lostGame.querySelector('h2').innerHTML = ''
         lostGame.querySelector('h2').innerHTML = `Total Score: ${score}` 
-        lostGameBtn.innerHTML = `${btn} <i class="fa-solid fa-arrow-right"></i>`
-        lostGameBtn.style.background = '#48b02c'
+        lostGameBtn.innerHTML = `${btn}`
+        // lostGameBtn.style.background = '#48b02c'
     }
     if(chanceNumber == 0) {
-        console.log('was read')
         chanceNumberRemain.innerHTML = `Game Over!!!!`
         chanceNumberRemain.style.color = 'red'
         lostGameBtn.innerHTML = `${btn}`
@@ -245,26 +264,42 @@ const gameLost = (chanceNumber, btn) => {
         lostGameBtn.innerHTML = `${btn}`
     }
     lostGame.style.display = 'flex'
-    clearInterval(id)
-    clearInterval(time)
+    isGameRunning = false
+    
 }   
 
 export const startGame = () => {
-    if(id) {
-        clearInterval(id)
+    if(!isGameRunning || isGameLoopRunning) return
+         // Cancel the previous animation frame if it exists
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
     }
-    if(time) {
-        clearInterval(time)
-    }
-    id = setInterval(() => {
+        isGameLoopRunning = true
+    const gameLoop = (timestamp) => {
+        if(!isGameRunning) {
+            isGameLoopRunning = false
+            return
+        }
         moveBall();
         changeDirection()
         extremeSquare()
         removeBrick()
         if(isWin()) {
-            clearInterval(id)
-            console.log('is winner!!!!')
-           gameLost(4, "Success")
+            isGameRunning = false
+            isGameLoopRunning = false
+           gameLost(3, "Success")
+        }else {
+                animationFrameId = requestAnimationFrame(gameLoop)
         }
-    }, 100)
+    }
+    animationFrameId = requestAnimationFrame(gameLoop)
+}
+
+export const init = () => {
+    createBricks();
+    startGame()
+    movePaddle()
+    createChances()
+    resetTime()
+    throttleFunction()
 }
