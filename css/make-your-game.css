@@ -10,8 +10,15 @@ body{
     height: 100vh;
     background: rgb(48, 46, 46);
 }
+.title {
+    background: green;
+    padding: 10px;
+    margin: 10px 0;
+    color: whitesmoke;
+    font-size: 20px;
+    width: 150px;
+}
 .container {
-    /* background: red; */
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -21,7 +28,6 @@ body{
 .elements {
     width: 75%;
     height: 150px;
-    /* background: red; */
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
@@ -31,7 +37,6 @@ body{
 }
 .elements .chance{
     display: flex;
-    /* background: red; */
     justify-content: space-evenly;
     width: 350px;
 }
@@ -40,9 +45,7 @@ body{
     height: 30px;
     border-radius: 5px;
 }
-.elements .chance .disappear {
-    opacity: 0.1;
-}
+
 .gameSquare{
     height: 700px;
     width: 75%;
@@ -52,20 +55,17 @@ body{
 }
 .bricks {
     width: 100%;  /* Full width of the container */
-    height: 25%; /* Set height to fit your design */
+    height: 20%; /* Set height to fit your design */
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
     justify-content: center;
-    /* background: whitesmoke; */
     margin-top: 5px;
-    /* position: relative; */
 }
 .brick {
     width: 100px;
     height: 30px;
-    border-radius: 5px;
-    /* position: absolute; */
+    border-radius: 5px;/
 }
 
 .ball{
@@ -74,17 +74,21 @@ body{
     background: #fff;
     border-radius: 50%;
     position: absolute;
-    top: calc(100% - 300px);
-    left: calc(100% - 200px); 
+    left: 50%;
+    bottom: 10%;
+    transform: translate(-50%);
+    will-change: transform;
 } 
 .paddle{
     width: var(--paddle-width);
     height: 20px;
-    background: rgb(8, 8, 8);
+    background: rgb(255, 255, 255);
     border-radius: 10px;
     position: absolute;
     bottom: 10px;
-    left: calc(100% / 2 - var(--paddle-width)/2);
+    left: calc(50% - calc( var(--paddle-width)/2));
+    /* transform: translateX(-50%); */
+    will-change: transform;
 }
 
 .remove{
@@ -103,8 +107,17 @@ body{
     border-radius: 10px;
     border: 2px solid whitesmoke;
     color: whitesmoke;
-    display: none;
+    
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    will-change: transform;
 }
+
+.hidden {
+    display: none !important;
+}
+
 .gameLost img {
     width: 50px;
     height: 50px;
@@ -153,7 +166,6 @@ body{
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    display: none;
     position: absolute;
     top: calc(50%);
     left: calc(50%);

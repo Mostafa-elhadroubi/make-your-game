@@ -9,33 +9,31 @@
 </head>
 <body>
     <div class="container">
+        <div class="title">Arkanoid Game</div>
         <div class="elements">
             <h3>Level: <strong>1</strong></h3>
             <p class="score">Score: <strong>0</strong></p>
             <div class="clock">Timer: 00:00</div>
-            <div class="chance">Lives:</div>  
+            <div class="chance"></div>  
         </div>
         <div class="gameSquare">
             <div class="bricks"></div>
             <div class="paddle"></div>
             <div class="ball"></div>
         </div>
-        <div class="gameLost">
+        <div class="gameLost hidden">
             <p>Level: <strong>1</strong></p>
-            <h3>Game Over!!!</h3>
-            <h2></h2>
-            <button>Restart</button>
+            <h1></h1>
+            <h3></h3>
+            <button></button>
         </div>
-        <div class="continueOrRestart">
+        <div class="continueOrRestart hidden">
             <button>Continue</button>
             <button>Restart</button>
         </div>
     </div>
 
 
-    <script type="module">
-        import {init} from '../js/moveBall.js'
-        init()
-    </script>
+    <script type="module" src="../js/main.js"></script>
 </body>
 </html>
