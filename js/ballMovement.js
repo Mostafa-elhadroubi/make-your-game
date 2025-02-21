@@ -4,7 +4,7 @@ import { removeBrick } from "./bricks.js";
 const ball = document.querySelector('.ball');
 const paddle = document.querySelector('.paddle');
 const squareRect = document.querySelector('.gameSquare').getBoundingClientRect();
-const ballSpeed = 7;
+const ballSpeed = 3;
 const velocity = {
     horizontal: 1,
     vertical: -1

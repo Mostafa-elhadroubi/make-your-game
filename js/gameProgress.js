@@ -26,9 +26,10 @@ export const lostChance = () => {
 
 function showGameOver() {
     const description = lostGame.querySelector('.gameLost h3')
-    const header = lostGame.querySelector('.gameLost h1')
+    const header = lostGame.querySelector('.gameLost h2')
     description.innerHTML = `You have lost!`
     header.innerHTML = `Game Over!`
+    header.style.color = 'rgb(236, 21, 21)'
     btn.innerHTML = `Restart`
     lostGame.classList.remove('hidden')
 }
@@ -40,6 +41,7 @@ export function checkWin() {
 
         description.innerHTML = `Win <img src="../icon/verified.png"/>`
         header.innerHTML = `Total Score: ${gameState.score}` 
+        header.style.color = 'white'
         btn.innerHTML = `Restart`
         gameState.pause = true
         lostGame.classList.remove('hidden')

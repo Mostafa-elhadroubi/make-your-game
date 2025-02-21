@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 *{
     padding: 0;
     margin: 0;
@@ -11,12 +12,12 @@ body{
     background: rgb(48, 46, 46);
 }
 .title {
-    background: green;
-    padding: 10px;
-    margin: 10px 0;
+    font-family: 'Roboto Mono', serif;
+    padding: 5px 20px;
+    margin: 10px 0 0 0;
     color: whitesmoke;
-    font-size: 20px;
-    width: 150px;
+    font-size: 24px;
+    font-weight: 800;
 }
 .container {
     display: flex;
@@ -27,7 +28,7 @@ body{
 }
 .elements {
     width: 75%;
-    height: 150px;
+    height: 100px;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
@@ -54,8 +55,8 @@ body{
     position: relative;
 }
 .bricks {
-    width: 100%;  /* Full width of the container */
-    height: 20%; /* Set height to fit your design */
+    width: 100%; 
+    height: 20%; 
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
@@ -65,7 +66,7 @@ body{
 .brick {
     width: 100px;
     height: 30px;
-    border-radius: 5px;/
+    border-radius: 5px;
 }
 
 .ball{
@@ -87,7 +88,6 @@ body{
     position: absolute;
     bottom: 10px;
     left: calc(50% - calc( var(--paddle-width)/2));
-    /* transform: translateX(-50%); */
     will-change: transform;
 }
 
@@ -187,5 +187,13 @@ body{
     color: white;
     background: rgb(48, 46, 46);
     border: 2px solid white;
-    /* color: rgb(236, 21, 21); */
+}
+
+@media (max-width: 400px) {
+    .gameLost, .continueOrRestart {
+        width: 250px;
+    }
+    .gameSquare{
+        height: 500px;
+    }
 }
