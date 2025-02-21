@@ -36,9 +36,9 @@ function showGameOver() {
 export function checkWin() {
     if(totalBricks == 0) {
         const description = lostGame.querySelector('.gameLost h3')
-        const header = lostGame.querySelector('.gameLost h1')
+        const header = lostGame.querySelector('.gameLost h2')
 
-        description.innerHTML = `You win the game <img src="../icon/verified.png"/>`
+        description.innerHTML = `Win <img src="../icon/verified.png"/>`
         header.innerHTML = `Total Score: ${gameState.score}` 
         btn.innerHTML = `Restart`
         gameState.pause = true
@@ -49,9 +49,10 @@ export function checkWin() {
 
 function showAnotherChance() {
     const description = lostGame.querySelector('.gameLost h3')
-    const header = lostGame.querySelector('.gameLost h1')
+    const header = lostGame.querySelector('.gameLost h2')
     description.innerHTML = `Lives remain: <strong>${gameState.chanceNumber}</strong>`
-    header.innerHTML = `still have chances!`
+    header.innerHTML = `Try Again!`
+    header.style.color = 'rgb(236, 21, 21)'
     btn.innerHTML = `Continue`
     lostGame.classList.remove('hidden')
 }

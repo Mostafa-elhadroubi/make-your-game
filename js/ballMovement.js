@@ -32,8 +32,8 @@ const moveBall = () => {
     }
 
     if (ball.getBoundingClientRect().bottom >= paddle.getBoundingClientRect().top 
-    && ball.getBoundingClientRect().left > paddle.getBoundingClientRect().left 
-    && ball.getBoundingClientRect().right < paddle.getBoundingClientRect().right) {
+    && ball.getBoundingClientRect().left + 10> paddle.getBoundingClientRect().left 
+    && ball.getBoundingClientRect().right - 10 < paddle.getBoundingClientRect().right) {
         velocity.vertical *= -1
     } else {
         if(ball.getBoundingClientRect().bottom >= paddle.getBoundingClientRect().top) {
@@ -55,7 +55,7 @@ const moveBall = () => {
 
     removeBrick(ball);
     checkWin()
-    
+
     if (ball.getBoundingClientRect().bottom + ballSpeed >= borders.bottom) {
         ball.style.opacity = '0'
         lostChance()

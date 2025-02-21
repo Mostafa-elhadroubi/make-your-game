@@ -119,9 +119,10 @@ body{
 }
 
 .gameLost img {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
+    vertical-align: middle;
 }
 .gameLost p {
     font-size: 24px;
@@ -186,4 +187,5 @@ body{
     color: white;
     background: rgb(48, 46, 46);
     border: 2px solid white;
+    /* color: rgb(236, 21, 21); */
 }
