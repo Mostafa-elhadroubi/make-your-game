@@ -9,7 +9,6 @@ export const gameState = {
     gameLost: false,
     chanceLost: false,
     pause : false,
-    animationId : null,
     chanceNumber: 3,
     score : 0,
     lastTime : 0,
@@ -25,7 +24,7 @@ export function gameloop(time) {
         timer(time)
     }
     moveTitle()
-   gameState.animationId =  requestAnimationFrame(gameloop)
+    requestAnimationFrame(gameloop)
 }
 
 
@@ -33,7 +32,7 @@ export function gameloop(time) {
 export function start() {
     createBricks()
     createChances()
-    gameState.animationId = requestAnimationFrame(gameloop)
+    requestAnimationFrame(gameloop)
 }
 
 start();

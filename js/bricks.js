@@ -18,7 +18,6 @@ const createBricks = () => {
     let bricksRow = Math.floor(heightSquareBricks / brickHeight);
     let bricksColumn = Math.floor(widthSquareBricks / brickWidth);
     totalBricks = bricksRow * bricksColumn;
-    // console.log(totalBricks)
     for (let i = 0; i < bricksRow; i++) {
         for (let j = 0; j < bricksColumn; j++) {
             const brick = document.createElement('div')

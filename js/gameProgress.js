@@ -74,7 +74,7 @@ function ContinueAfterLostChance() {
 }
 
 function restartGame() {
-    cancelAnimationFrame(gameState.animationId)
+    // cancelAnimationFrame(gameState.animationId)
     // document.querySelector('.bricks').innerHTML = ''
     // document.querySelector('.chance').innerHTML = ''
     document.querySelector('.score').innerHTML = 'Score: 0'
@@ -101,7 +101,7 @@ function restartGame() {
     gameState.seconds = -1
     gameState.lastTime = 0
     restartCreateBricks()
-    gameState.animationId = requestAnimationFrame(gameloop)
+    // gameState.animationId = requestAnimationFrame(gameloop)
 }
 
 export const timer = (timestamp) => {
