@@ -1,13 +1,12 @@
-const throttle = (fn, delay) => {
+const debounce = (fn, delay) => {
     let time = null
     return () => {
-        if (time) return
+        clearTimeout(time)
         time = setTimeout(() => {
             fn()
-            time = null
         }, delay)
     }
 }
-addEventListener('resize', throttle(() => {
+addEventListener('resize', debounce(() => {
     window.location.reload()
 }, 100))

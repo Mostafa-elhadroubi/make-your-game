@@ -2,14 +2,14 @@ import { moveBall } from "./ballMovement.js";
 import { createBricks, createChances } from "./bricks.js";
 import { moveTitle, timer } from "./gameProgress.js";
 import { movePaddle } from "./movePaddle.js";
-import './throttle.js'
+import './debounce.js'
 
 
 export const gameState = {
     gameLost: false,
     chanceLost: false,
     pause : false,
-    ainationId : null,
+    animationId : null,
     chanceNumber: 3,
     score : 0,
     lastTime : 0,
@@ -25,7 +25,7 @@ export function gameloop(time) {
         timer(time)
     }
     moveTitle()
-   gameState.ainationId =  requestAnimationFrame(gameloop)
+   gameState.animationId =  requestAnimationFrame(gameloop)
 }
 
 
@@ -33,7 +33,7 @@ export function gameloop(time) {
 export function start() {
     createBricks()
     createChances()
-    gameState.ainationId = requestAnimationFrame(gameloop)
+    gameState.animationId = requestAnimationFrame(gameloop)
 }
 
 start();

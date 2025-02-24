@@ -24,30 +24,39 @@ const ballPosition = {
 }
 
 const moveBall = () => {
+    // Check for collisions with the game borders
     if (ball.getBoundingClientRect().left - ballSpeed <= borders.left || ball.getBoundingClientRect().right + ballSpeed >= borders.right) {
-        velocity.horizontal *= -1
+        velocity.horizontal *= -1; // Reverse horizontal direction
     }
     if (ball.getBoundingClientRect().top - ballSpeed <= borders.top) {
-        velocity.vertical *= -1
+        velocity.vertical *= -1; // Reverse vertical direction
     }
 
-    if (ball.getBoundingClientRect().bottom >= paddle.getBoundingClientRect().top 
-    && ball.getBoundingClientRect().left + 10> paddle.getBoundingClientRect().left 
-    && ball.getBoundingClientRect().right - 10 < paddle.getBoundingClientRect().right) {
-        velocity.vertical *= -1
-    } else {
-        if(ball.getBoundingClientRect().bottom >= paddle.getBoundingClientRect().top) {
-            if((ball.getBoundingClientRect().right >= paddle.getBoundingClientRect().left
-            && ball.getBoundingClientRect().right < paddle.getBoundingClientRect().right)
-            || (ball.getBoundingClientRect().left <= paddle.getBoundingClientRect().right
-            && ball.getBoundingClientRect().left > paddle.getBoundingClientRect().left)) {
-                velocity.horizontal *= -1
-                velocity.vertical *= -1
-            }
+    // Check for collisions with the paddle
+    if (
+        ball.getBoundingClientRect().bottom >= paddle.getBoundingClientRect().top && // Ball is at paddle height
+        ball.getBoundingClientRect().left < paddle.getBoundingClientRect().right && // Ball is within paddle width
+        ball.getBoundingClientRect().right > paddle.getBoundingClientRect().left
+    ) {
+        // Check if the ball hits the top of the paddle
+        if (ball.getBoundingClientRect().bottom <= paddle.getBoundingClientRect().top + ballSpeed) {
+            velocity.vertical *= -1; // Reverse vertical direction
+        }
+
+        // Check if the ball hits the left or right edge of the paddle
+        if (
+            ball.getBoundingClientRect().right >= paddle.getBoundingClientRect().left && // Ball hits left edge
+            ball.getBoundingClientRect().left < paddle.getBoundingClientRect().left
+        ) {
+            velocity.horizontal *= -1; // Reverse horizontal direction
+        }
+        if (
+            ball.getBoundingClientRect().left <= paddle.getBoundingClientRect().right && // Ball hits right edge
+            ball.getBoundingClientRect().right > paddle.getBoundingClientRect().right
+        ) {
+            velocity.horizontal *= -1; // Reverse horizontal direction
         }
     }
-
-
 
     ballPosition.x += ballSpeed * velocity.horizontal
     ballPosition.y += ballSpeed * velocity.vertical

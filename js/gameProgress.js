@@ -1,6 +1,6 @@
 import { ball, ballPosition, velocity } from "./ballMovement.js";
 import { chanceDivs, restartCreateBricks, totalBricks } from "./bricks.js";
-import { gameloop, gameState, start } from "./main.js";
+import { gameloop, gameState } from "./main.js";
 import { paddle, paddlePosition } from "./movePaddle.js";
 
 const lostGame = document.querySelector('.gameLost')
@@ -74,7 +74,7 @@ function ContinueAfterLostChance() {
 }
 
 function restartGame() {
-    cancelAnimationFrame(gameState.ainationId)
+    cancelAnimationFrame(gameState.animationId)
     // document.querySelector('.bricks').innerHTML = ''
     // document.querySelector('.chance').innerHTML = ''
     document.querySelector('.score').innerHTML = 'Score: 0'
@@ -101,7 +101,7 @@ function restartGame() {
     gameState.seconds = -1
     gameState.lastTime = 0
     restartCreateBricks()
-    gameState.ainationId = requestAnimationFrame(gameloop)
+    gameState.animationId = requestAnimationFrame(gameloop)
 }
 
 export const timer = (timestamp) => {
